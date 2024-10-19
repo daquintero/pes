@@ -22,6 +22,26 @@ import os
 # <figcaption align = "center"> YOUR CAPTION </figcaption>
 # </figure>
 
+# In this design, we have a microstrip with a 0.2mm width and dielectric separation between signal and ground of 0.12mm per the PCB stackup. It was a Eurocircuits defined impedance PCB. We can use our microstrip modelling methods to estimate the performance of the microstrip:
+
+import piel.models.physical.electrical.transmission_lines as tl
+
+W = 0.2e-3
+d = 0.12e-3
+e_eff = tl.microstrip.epsilon_e(epsilon_r=4.3, width_m=W, dielectric_thickness_m=d)
+Z_0 = tl.microstrip.Z_0(W, d, e_eff)
+Z_0
+
+# ```
+# 54.99309382029212
+# ```
+
+# In order to estimate the dominant conductive attenuation loss $\alpha_c$ per length, we need to calculate the sheet resistance $R_s$. There is a 3um thick ENIG Ni/Au 3-6um Nickel and 0.12um gold finish. This is mainly so that the skin thickness where most of the RF signals propagate see low resistivity.
+
+rs = tl.microstrip.R_s(frequency_Hz=1e6, conductivity_S_per_m=4e-7)
+
+tl.microstrip.alpha_c(rs, initial_Z_0, W) * 0.02
+
 # ## Creating an `ExperimentInstance`
 #
 # Whenever using an measurement setup, it can be difficult to remember all the configurations that need to be tested with multiple parameters, a set of wiring, and time setups and more. This is especially pressing if the experiment cannot be automated and requires manual input. As such, there is some functionality built into the `piel.measurement` module to help track, manage and compare data with simulated data accordingly.

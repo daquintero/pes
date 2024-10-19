@@ -538,20 +538,18 @@ cocotb_simulation_data
 
 # ## 3b. Digital Chip Implementation
 
-component = piel.flows.get_latest_digital_run_component(
-    module=full_flow_demo,
-)
-component.plot()
-
 component = piel.flows.layout_truth_table(
     truth_table=truth_table,
     module=full_flow_demo,
 )
 
+component = piel.flows.get_latest_digital_run_component(
+    module=full_flow_demo,
+)
+component.plot()
+
 print("Truth Table Layout")
 component
-
-# ### 4a.
 
 # ## 4a. Driver-Amplfier Modelling
 

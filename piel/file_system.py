@@ -709,7 +709,9 @@ def return_path(
             output_path = pathlib.Path(input_path.__file__) / ".."
         except Exception:
             # TODO FIX this hacked af
-            output_path = pathlib.Path(input_path.__path__[0])
+            output_path_raw = pathlib.Path(input_path.__path__[0])
+            output_directory_name = output_path_raw.name
+            output_path = output_path_raw / output_directory_name
             pass
     elif isinstance(input_path, os.PathLike):
         output_path = pathlib.Path(input_path)

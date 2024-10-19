@@ -79,3 +79,5 @@ This type alias is currently a placeholder (Any | None).
 The idea is that this is a collective static data representation compatible with both a sax-translation as
 with the standard sckit-rf network models.
 """
+
+FrequencyTransmissionList = list[FrequencyTransmissionModel]

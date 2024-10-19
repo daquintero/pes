@@ -4,30 +4,30 @@
 (* generator = "Amaranth" *)
 module top(bit_phase_0, bit_phase_1, input_fock_state_str);
   reg \$auto$verilog_backend.cc:2334:dump_module$1  = 0;
-  (* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:86" *)
+  (* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:86" *)
   output [4:0] bit_phase_0;
   reg [4:0] bit_phase_0;
-  (* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:86" *)
+  (* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:86" *)
   output [4:0] bit_phase_1;
   reg [4:0] bit_phase_1;
-  (* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:82" *)
+  (* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:82" *)
   input [2:0] input_fock_state_str;
   wire [2:0] input_fock_state_str;
   always @* begin
     if (\$auto$verilog_backend.cc:2334:dump_module$1 ) begin end
     (* full_case = 32'd1 *)
-    (* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:112" *)
+    (* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:112" *)
     casez (input_fock_state_str)
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h4:
           bit_phase_0 = 5'h00;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h1:
           bit_phase_0 = 5'h00;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h2:
           bit_phase_0 = 5'h1f;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:124" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:124" */
       default:
           bit_phase_0 = 5'h00;
     endcase
@@ -35,18 +35,18 @@ module top(bit_phase_0, bit_phase_1, input_fock_state_str);
   always @* begin
     if (\$auto$verilog_backend.cc:2334:dump_module$1 ) begin end
     (* full_case = 32'd1 *)
-    (* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:112" *)
+    (* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:112" *)
     casez (input_fock_state_str)
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h4:
           bit_phase_1 = 5'h00;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h1:
           bit_phase_1 = 5'h1f;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:115" */
       3'h2:
           bit_phase_1 = 5'h00;
-      /* src = "/nix/store/li0p6589931jpjhq811qb8x0gyrv28pp-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:124" */
+      /* src = "/nix/store/rh9r11mm76n6nb2dry46ir59a1y296s9-python3.11-piel-0.1.0/lib/python3.11/site-packages/piel/tools/amaranth/construct.py:124" */
       default:
           bit_phase_1 = 5'h00;
     endcase

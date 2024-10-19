@@ -733,7 +733,7 @@ ax.set_ylabel(r"$\Delta n_{eff}$", size=14)
 ax.set_title(
     "2um Electro-optic refractive index change per effective modulation length"
 )
-fig.savefig("img/refractive_index_change_modulation_length.png")
+# fig.savefig("img/refractive_index_change_modulation_length.png")
 
 # +
 frey_dn_dT = np.array(
@@ -1208,3 +1208,4 @@ ax1.set_title(
 )
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
 fig.savefig("nedeljkovic_dopant_concentration_variations.png")
+# -

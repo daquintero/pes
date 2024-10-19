@@ -72,6 +72,25 @@ class CoaxialCableMaterialSpecificationType(Quantity):
     The material of the dielectric.
     """
 
+    def supplied_parameters(self):
+        """
+        Returns a list of parameter names that have been supplied (i.e., are not None).
+
+        Returns:
+            list[str]: A list of parameter names with non-None values.
+        """
+        values = [
+            param
+            for param, value in [
+                ("core", self.core),
+                ("sheath", self.sheath),
+                ("dielectric", self.dielectric),
+            ]
+            if value is not None
+        ]
+        # print(values)
+        return values
+
 
 class DCCableGeometryType(Quantity):
     core_cross_sectional_area_m2: float = 0
