@@ -5598,28 +5598,6 @@ files = [
 ]
 
 [[package]]
-name = "sky130"
-version = "0.11.1"
-description = "skywater130 pdk"
-optional = true
-python-versions = ">=3.10"
-files = []
-develop = false
-
-[package.dependencies]
-gdsfactory = ">=7.26.0,<8"
-
-[package.extras]
-dev = ["pre-commit", "pytest", "pytest-cov", "pytest_regressions"]
-docs = ["jupyter-book (==1.0.0)", "jupytext"]
-
-[package.source]
-type = "git"
-url = "https://github.com/daquintero/skywater130.git"
-reference = "dario/patch_for_rladder_gplugins"
-resolved_reference = "de557f49ccbd30271243aba7ee7a175036796d46"
-
-[[package]]
 name = "sky130-hdl21"
 version = "6.0.0"
 description = "SkyWater 130nm PDK Package for Hdl21"
@@ -7019,10 +6997,10 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-dev = ["amaranth", "amaranth-yosys", "bokeh", "bump-my-version", "cocotb", "cookiecutter", "coverage", "devtools", "flake8", "gdsfactory", "gplugins", "hdl21", "ipyevents", "ipytree", "ipywidgets", "jupyter", "jupyter-bokeh", "jupyter-core", "jupyter-packaging", "jupyterlab", "jupytext", "kfactory", "kweb", "myst-parser", "nbsphinx", "pandoc", "pre-commit", "pydata-sphinx-theme", "pytest", "qutip", "ruff", "sax", "scikit-rf", "sky130", "sky130-hdl21", "sphinx", "sphinx-autoapi", "sphinx-autobuild", "sphinx-autodoc-typehints", "sphinx-book_theme", "sphinx-copybutton", "sphinx-gallery", "sphinx-pydantic", "sphinx-rtd-theme", "sphinx-version-warning", "sphinxcontrib-pdfembed", "tabulate", "thewalrus", "tox", "vlsirtools", "watchdog"]
-tools = ["amaranth", "amaranth-yosys", "cocotb", "gdsfactory", "gplugins", "hdl21", "qutip", "sax", "scikit-rf", "sky130", "sky130-hdl21", "tabulate", "thewalrus", "vlsirtools"]
+dev = ["amaranth", "amaranth-yosys", "bokeh", "bump-my-version", "cocotb", "cookiecutter", "coverage", "devtools", "flake8", "gdsfactory", "gplugins", "hdl21", "ipyevents", "ipytree", "ipywidgets", "jupyter", "jupyter-bokeh", "jupyter-core", "jupyter-packaging", "jupyterlab", "jupytext", "kfactory", "kweb", "myst-parser", "nbsphinx", "pandoc", "pre-commit", "pydata-sphinx-theme", "pytest", "qutip", "ruff", "sax", "scikit-rf", "sky130-hdl21", "sphinx", "sphinx-autoapi", "sphinx-autobuild", "sphinx-autodoc-typehints", "sphinx-book_theme", "sphinx-copybutton", "sphinx-gallery", "sphinx-pydantic", "sphinx-rtd-theme", "sphinx-version-warning", "sphinxcontrib-pdfembed", "tabulate", "thewalrus", "tox", "vlsirtools", "watchdog"]
+tools = ["amaranth", "amaranth-yosys", "cocotb", "gdsfactory", "gplugins", "hdl21", "qutip", "sax", "scikit-rf", "sky130-hdl21", "tabulate", "thewalrus", "vlsirtools"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "bafed5ce62f180c37fbf4c273e02d20ccf01444345d874d5fddc61acb6730cac"
+content-hash = "445221b4fef2385d5c358a12af151638c7b55baf221dfc1a0ee0fd21f57bc512"

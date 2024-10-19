@@ -1,5 +1,35 @@
 # # `piel` Electronic-Photonic Co-Design - Full Flow Demo
 
+# <div style="padding: 10px; border-radius: 5px;">
+# <strong>⚠️ Warning:</strong> This example requires using the piel nix environment which are locally available when cloning and installing the `stable` verision of the github source code. See example setup as follows
+# </div>
+#
+# Note that this is only CI tested in an ubuntu environment:
+# ```
+# git clone https://github.com/daquintero/piel.git
+# source scripts/install_piel_nix.sh
+# ```
+#
+# You can verify you have the tools required by running the following magic cells:
+
+# ! which openlane
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
+# ! which ngspice
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
+# ! which gtkwave
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
 # The goal of this notebook is to demonstrate some of the codesign functionality in a photonics-first electronically-specified system.
 #
 #

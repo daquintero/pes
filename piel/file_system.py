@@ -705,7 +705,12 @@ def return_path(
         if as_piel_module:
             output_path = treat_as_module(output_path)
     elif isinstance(input_path, types.ModuleType):
-        output_path = pathlib.Path(input_path.__file__) / ".."
+        try:
+            output_path = pathlib.Path(input_path.__file__) / ".."
+        except Exception:
+            # TODO FIX this hacked af
+            output_path = pathlib.Path(input_path.__path__[0])
+            pass
     elif isinstance(input_path, os.PathLike):
         output_path = pathlib.Path(input_path)
         if as_piel_module:

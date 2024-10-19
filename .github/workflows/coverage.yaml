@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - full_example_dev_again
 
 defaults:
   run:
@@ -24,9 +25,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:  # Set environment variables for the whole job
-      PIP_ONLY_BINARY: gdstk
-      MPLBACKEND: agg
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.10
@@ -45,18 +43,21 @@ jobs:
       run: |
         uv venv venv
         source venv/bin/activate
-        uv pip install -e .[dev]
+        pip install coverage
 
-    #----------------------------------------------
-    #    add matrix specifics and run test suite
-    #----------------------------------------------
-    - name: Run tests
+    # Step 2: Install Nix
+    - name: Install and Build Nix with script
+      run: source scripts/install_piel_nix.sh
+
+    - name: Run Coverage Tests
       run: |
-        source venv/bin/activate
-        python -m coverage run -m pytest -rA tests
-        python -m coverage report -m
-        echo "total=$(coverage report --format=total)" >> $GITHUB_ENV
-        echo '### Total coverage: ${{ env.total }}%'
+        nix develop . --command bash -c "
+          coverage run -m pytest -rA tests/ &&
+          coverage report -m &&
+          total=\$(coverage report | tail -n1 | awk '{print \$NF}' | tr -d '%') &&
+          echo \"total=\${total}\" >> \$GITHUB_ENV &&
+          echo \"### Total coverage: \${total}%\"
+        "
 
     - name: "Create badge"
       # if: ${{ github.ref == 'refs/heads/latest' }}
@@ -68,7 +69,7 @@ jobs:
         filename: piel_coverage.json
         label: Coverage
         message: ${{ env.total }}%
-        minColorRange: 40
+        minColorRange: 60
         maxColorRange: 95
         valColorRange: ${{ env.total }}
         style: "for-the-badge"

@@ -68,5 +68,5 @@ async def truth_table_test(dut):
     }
 
     pd.DataFrame(simulation_data).to_csv(
-        "/home/daquintero/phd/piel/docs/examples/07_full_flow_demo_electronic_photonic/full_flow_demo/full_flow_demo/tb/out/truth_table_test_results.csv"
+        "/home/daquintero/phd/piel/docs/examples/07_full_flow_demo_electronic_photonic/full_flow_demo/tb/out/truth_table_test_results.csv"
     )

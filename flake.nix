@@ -103,16 +103,21 @@
         ];
 
         shellHook = ''
+          export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [
+            pkgs.stdenv.cc.cc
+          ]}
           echo "Setting Piel-Nix Environment Up"
           export PATH=${app}/bin:$PATH
           export PYTHONPATH=${app}/lib/python${python.version}/site-packages:$PYTHONPATH
           alias python=python3          # Alias 'python' to 'python3'
+          rm -rf .venv
           python -m venv .venv
           source .venv/bin/activate     # Activate the virtual environment
           echo "Virtual environment activated. Installing additional packages with pip..."
           uv pip install -e .[dev]
           uv pip install -r requirements_notebooks.txt
         '';
+        LOCALE_ARCHIVE="/usr/lib/locale/locale-archive";  # let's nix read the LOCALE, to silence warning messages
       };
     };
 }

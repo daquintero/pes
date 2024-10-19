@@ -1,0 +1,9 @@
+[run]
+source = piel
+branch = True
+parallel = True
+
+[report]
+omit =
+    */tests/*
+    */__init__.py

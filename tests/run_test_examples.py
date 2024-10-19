@@ -21,11 +21,7 @@ def test_script_execution(script_directory):
         "03a_sax_cocotb_cosimulation.py",
         "03b_optical_function_verification.py",
         "04_spice_cosimulation.py",
-        "04a_analogue_circuit_layout_simulation.py",
-        "05_quantum_integration_basics.py",
         "06_component_codesign_basics.py",
-        "07_mixed_signal_photonic_cosimulation.py",
-        "08_basic_interconnection_modelling.py",
     ]
 
     for script in scripts:

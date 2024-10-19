@@ -62,4 +62,4 @@ jobs:
     - name: Run tests
       run: |
         source venv/bin/activate
-        python -m pytest -rA tests
+        python -m pytest -m "not full_env" -rA tests

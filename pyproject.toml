@@ -1,10 +1,6 @@
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.poetry]
 name = "piel"
-version = "0.0.56"
+version = "0.1.0"
 description = "Photonic Integrated Electronics: microservices to codesign photonics, electronics, communications, quantum, and more."
 authors = ["Dario Quintero <darioaquintero@gmail.com>"]
 license = "MIT"
@@ -50,7 +46,7 @@ qutip = { version = ">=4.7,<5.0", optional = true }
 sax = { version = "==0.12.2", optional = true }  # Pinned for pydantic <v2 compatibility
 tabulate = { version = "*", optional = true }
 scikit-rf = { version = ">=1.1.0,<2.0.0", optional = true }
-sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true }
+# sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true } # Depreciated until gdsfactory8
 sky130-hdl21 = { version = ">=6.0.0,<7.0.0", optional = true }
 thewalrus = { version = ">=0.20.0,<0.21.0", optional = true }
 vlsirtools = { version = ">=6.0.0,<7.0.0", optional = true }
@@ -179,6 +175,10 @@ name = "jaxsource"
 priority = "supplemental"
 url = "https://storage.googleapis.com/jax-releases/jax_releases.html"
 
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 # Tool configurations
 
 [tool.flake8]
@@ -188,6 +188,9 @@ exclude = "docs"
 addopts = "-rav"
 minversion = "6.0"
 testpaths = ["tests/"]
+markers = [
+    "full_env: Tests to run within a full environment"
+]
 
 
 [tool.ruff.lint.per-file-ignores]

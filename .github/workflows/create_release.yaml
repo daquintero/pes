@@ -25,6 +25,6 @@ jobs:
           tag_name: v${{ env.VERSION }}  # Use the incremented version as the tag name
           release_name: ${{ env.VERSION }}  # Customize the release name
           body: |
-            Alpha-Release ${{ env.VERSION }}
+            :tada: :tada: Piel Release Version: ${{ env.VERSION }}. Now stable and all CI env coverage tested. Let us know any feedback!
           draft: false
           release: true
