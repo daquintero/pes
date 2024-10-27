@@ -419,8 +419,8 @@ fig, axs = plt.subplots(2, 1, figsize=(8, 6))
 calibrated_vna_port1_open_network = rf_vna_self_calibration_data.data.collection[
     1
 ].network.subnetwork([0])  # only looking at port 1
-calibrated_vna_port1_open_network.plot_s_re(ax=axs[0])
-calibrated_vna_port1_open_network.plot_s_im(ax=axs[1])
+calibrated_vna_port1_open_network.plot_s_db(ax=axs[0])
+calibrated_vna_port1_open_network.plot_s_deg(ax=axs[1])
 axs[0].set_title("Real S11")
 axs[1].set_title("Imaginary S11")
 plt.tight_layout()
@@ -460,8 +460,8 @@ calibrated_short_data_file = "data/rf_vna_self_calibration/5/short_port1.s2p"
 calibrated_vna_port1_short_network = hfss_touchstone_2_network(
     calibrated_short_data_file
 ).subnetwork([0])  # Only looking at port1
-calibrated_vna_port1_short_network.plot_s_re(ax=axs[0])
-calibrated_vna_port1_short_network.plot_s_im(ax=axs[1])
+calibrated_vna_port1_short_network.plot_s_db(ax=axs[0])
+calibrated_vna_port1_short_network.plot_s_deg(ax=axs[1])
 axs[0].set_title("Real S11")
 axs[1].set_title("Imaginary S11")
 plt.tight_layout()
@@ -473,15 +473,10 @@ fig.savefig(
 
 # ### A HW Calibrated Load Measurement
 
-# + active=""
-# fig, axs = pv.create_plot_containers(container_list=[1, 1, 2], axes_per_element=1)
-# calibrated_load_data_file = (
-#     "data/rf_vna_self_calibration/3/load_port1.s2p"
-# )
-# calibrated_vna_port1_load_network = hfss_touchstone_2_network(calibrated_load_data_file)
-# calibrated_vna_port1_load_network.plot_s_db()
-# plt.tight_layout()
-# -
+calibrated_load_data_file = "data/rf_vna_self_calibration/3/load_port1.s2p"
+calibrated_vna_port1_load_network = hfss_touchstone_2_network(calibrated_load_data_file)
+calibrated_vna_port1_load_network.plot_s_db()
+plt.tight_layout()
 
 # ### A HW Calibrated Through-Measurement
 #
@@ -529,10 +524,12 @@ piel.visual.experimental.frequency.measurement_data_collection.plot_s_parameter_
 #
 # For example, you can simply plot directly from a provided `ExperimentData` accordingly too.
 
-piel.visual.experimental.frequency.experiment_data.plot_s_parameter_real_and_imaginary(
-    rf_vna_self_calibration_data,
-    path="../../_static/img/examples/08_basic_interconnection_modelling/s_parameter_re_im_vna_calibration_experiment_data_collection.jpg",
-)
+# + active=""
+# piel.visual.experimental.frequency.experiment_data.plot_s_parameter_real_and_imaginary(
+#     rf_vna_self_calibration_data,
+#     path="../../_static/img/examples/08_basic_interconnection_modelling/s_parameter_re_im_vna_calibration_experiment_data_collection.jpg",
+# )
+# -
 
 
 # **Creating Reports**
@@ -595,7 +592,7 @@ badly_calibrated_terminator_network.plot_s_db()
 
 # #### Why inverse-matrix-multipling measurement extraction does not work practically?
 #
-# There are cases in which we might want to de-embed a measurement from another measurement. This has to do with moving the reference planes between two measurements. Say, with a given calibration, we perform a through measurement of two cables and another through measurements of three cables, two which were the first measurement. It would be nice if we could determine the performance of the third new cable in the two cable network without having to recalibrate to the two-original-cables reference plane. This is the type of situation this comes handy.
+# There are cases in which we might want to de-embed a measurement from another measurement. This has to do with moving the reference planes between two measurements. Say, with a given calibration, we perform a through measurement of two cables and another through measurements of three cables, two which were in the first measurement. It would be nice if we could determine the performance of the third new cable in the two cable network without having to recalibrate to the two-original-cables reference plane. This is the type of situation this comes handy.
 #
 # This is not exactly "de-embedding" in the hardware-sense of the work, but maybe means more towards software network extraction from measurements.
 #
@@ -753,29 +750,38 @@ cal = skrf.calibration.SOLT(
 # +
 cal.run()
 
+piel.visual.activate_piel_styles()
+fig, axs = piel.visual.create_axes_per_figure(1, 3, figsize=(12, 4))
+
+
 # apply it to a dut
 dut = skrf.Network(
-    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_cable_ports/attenuator_20db.s2p"
+    "./measurement_data/calibration_kit_vna_cal_at_cable_ports/attenuator_20db.s2p"
 )
 dut_caled = cal.apply_cal(dut)
 
 # plot results
-dut_caled.plot_s_db()
+dut.plot_s_db(ax=axs[0], title="SOLT Software Uncalibrated")
+dut_caled.plot_s_db(ax=axs[1], title="SOLT Software Calibrated")
+hfss_touchstone_2_network(
+    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
+).plot_s_db(ax=axs[2], title="SOLT Hardware Calibrated")
+fig.savefig(
+    "../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example.jpg"
+)
 # -
 
-hfss_touchstone_2_network(
-    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
-).plot_s_db()
-
-hfss_touchstone_2_network(
-    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
-).plot_s_db()
-
-# We can now verify this measurement with the hardware-deembedding up to those two cables.
+# ![solt_calibration_example](../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example.jpg)
 
 # #### Comparison with Hardware De-Embedding
 #
+# So this means that the hardware calibration seems to provide less noisy results than performing the sfotware calibration. However, the software calibration seems to be more "correct" than the uncalibrated measurements and as such, probably provides more understanding of the actual operation within these measurements.
+#
 # Say, for the same calibration as the measurements above, we can now measure just the attenuator and compare with the de-embedded reference.
+
+# We can compare these software calibrations with the equivalent hardware calibrations in this Figure.
+
+# We can now verify this measurement with the hardware-deembedding up to those two cables.
 
 calvna_20db_attenuator_data_file = "measurement_data/software_deembedding/inverse_multiply/calvna_20db_attenuator_2082614820.s2p"
 calvna_20db_attenuator_network = hfss_touchstone_2_network(
