@@ -41,7 +41,7 @@ class Unit(SymbolicValue):
 
 
 A = Unit(name="ampere", datum="ampere", base=1, label=r"Current $A$", shorthand="A")
-dB = Unit(name="decibel", datum="dB", base=1, label=r"Ratio $dB$", shorthand="dB")
+dB = Unit(name="decibel", datum="dB", base=1, label=r"Magnitude $dB$", shorthand="dB")
 dBm = Unit(
     name="decibel_milliwatt", datum="dBm", base=1, label=r"Power $dBm$", shorthand="dBm"
 )

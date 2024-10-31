@@ -33,6 +33,7 @@ import pandas as pd
 import skrf
 from skrf.io.touchstone import hfss_touchstone_2_network
 from skrf.plotting import stylely
+import os
 # -
 
 # ## Basic Thermal Modelling
@@ -564,12 +565,14 @@ piel.visual.experimental.frequency.measurement_data_collection.plot_s_parameter_
 #
 # We might also want to extract the relevant operating points from a given `ExperimentData` in order to create an `ExperimentDataCollection`. We can automate the creation of the corresponding `ExperimentData` subsets based on the operating points in the `Experiment.parameters_list`.
 
-example_subset_data_collection = (
-    pe.create_experiment_data_collection_from_unique_parameters(
-        experiment_data=rf_vna_self_calibration_data
-    )
-)
-# TODO show this works example_subset_data_collection
+# + active=""
+# example_subset_data_collection = (
+#     pe.create_experiment_data_collection_from_unique_parameters(
+#         experiment_data=rf_vna_self_calibration_data
+#     )
+# )
+# # TODO show this works example_subset_data_collection
+# -
 
 # #### Identifying bad/shifting calibration
 
@@ -632,6 +635,7 @@ software_dembeded_attenuator = skrf.network.de_embed(
 )
 software_dembeded_attenuator.plot_s_db()
 
+
 # #### Configuring a software calibration scheme
 
 # `scikit-rf` have other ways to perform calibration and de-embedding.
@@ -645,9 +649,6 @@ software_dembeded_attenuator.plot_s_db()
 # We can use given measurements from one HW calibration protocol to perform a software calibration protocol we can use to correct our measurements.
 
 # First, let's create our reference measurements. Note that the way the data was saved was a bit raw format, so let's first construct this into a data format that is easily integrateable with the functionality we want to achieve.
-
-import piel
-import os
 
 
 def construct_calibration_networks(measurements_directory: piel.PathTypes):
@@ -759,19 +760,75 @@ dut = skrf.Network(
     "./measurement_data/calibration_kit_vna_cal_at_cable_ports/attenuator_20db.s2p"
 )
 dut_caled = cal.apply_cal(dut)
+hw_caled = hfss_touchstone_2_network(
+    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
+)
 
 # plot results
 dut.plot_s_db(ax=axs[0], title="SOLT Software Uncalibrated")
 dut_caled.plot_s_db(ax=axs[1], title="SOLT Software Calibrated")
-hfss_touchstone_2_network(
-    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
-).plot_s_db(ax=axs[2], title="SOLT Hardware Calibrated")
+hw_caled.plot_s_db(ax=axs[2], title="SOLT Hardware Calibrated")
+
 fig.savefig(
     "../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example.jpg"
 )
 # -
 
 # ![solt_calibration_example](../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example.jpg)
+
+# +
+piel.visual.activate_piel_styles()
+fig, axs = piel.visual.create_axes_per_figure(1, 3, figsize=(12, 4))
+
+
+# apply it to a dut
+dut = skrf.Network(
+    "./measurement_data/calibration_kit_vna_cal_at_cable_ports/attenuator_20db.s2p"
+)
+dut_caled = cal.apply_cal(dut)
+hw_caled = hfss_touchstone_2_network(
+    "/home/daquintero/phd/piel/docs/examples/08_basic_interconnection_modelling/measurement_data/calibration_kit_vna_cal_at_vna_ports/attenuator_20db.s2p"
+)
+
+dut = piel.integration.convert_to_network_transmission(dut)
+dut_caled = piel.integration.convert_to_network_transmission(dut_caled)
+hw_caled = piel.integration.convert_to_network_transmission(hw_caled)
+
+# plot results
+piel.visual.plot.signals.frequency.plot_s11_s21_magnitude_per_input_frequency(
+    dut,
+    fig,
+    [axs[0]],
+    title="SOLT Software Uncalibrated",
+)
+
+piel.visual.plot.signals.frequency.plot_s11_s21_magnitude_per_input_frequency(
+    dut_caled,
+    fig,
+    [axs[1]],
+    title="SOLT Software Calibrated",
+    ylabel="",
+)
+
+piel.visual.plot.signals.frequency.plot_s11_s21_magnitude_per_input_frequency(
+    hw_caled,
+    fig,
+    [axs[2]],
+    title="SOLT Hardware Calibrated",
+    ylabel="",
+)
+
+ylimit = [-50, 10]
+axs[0].set_ylim(ylimit)
+axs[1].set_ylim(ylimit)
+axs[2].set_ylim(ylimit)
+
+fig.savefig(
+    "../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example_piel.jpg"
+)
+# -
+
+# ![solt_calibration_example_piel](../../_static/img/examples/08_basic_interconnection_modelling/solt_calibration_example_piel.jpg)
 
 # #### Comparison with Hardware De-Embedding
 #
@@ -1010,6 +1067,7 @@ data = {
         22.5,
     ],
 }
+
 
 # Create a DataFrame
 df = pd.DataFrame(data)

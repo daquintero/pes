@@ -281,7 +281,7 @@ power_sweep_frequency_array_state = pe.extract_power_sweep_s2p_to_network_transm
 
 pe.extract_power_sweep_s2p_to_network_transmission
 
-piel.visual.plot.signals.frequency.plot_two_port_gain_in_dBm(
+piel.visual.plot.signals.frequency.plot_s21_gain_per_dBm(
     network_transmission=power_sweep_frequency_array_state,
     path="../../_static/img/examples/09a_model_rf_amplifier/example_power_sweep_plot.png",
 )

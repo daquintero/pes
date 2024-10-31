@@ -24,3 +24,4 @@ from .sax_qutip import (
     verify_sax_model_is_unitary,
 )
 from .thewalrus_qutip import fock_transition_probability_amplitude
+from .signal.frequency.convert import convert_to_network_transmission

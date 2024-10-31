@@ -30,6 +30,7 @@ def plot_oscilloscope_signals_time(
     figure_kwargs: Optional[Dict[str, Any]] = None,
     legend_kwargs: Optional[Dict[str, Any]] = None,
     rising_edges_kwargs: Optional[Dict[str, Any]] = None,
+    smallest_range_s: tuple[float, float] = None,
     *args,
     **kwargs,
 ):
@@ -37,7 +38,6 @@ def plot_oscilloscope_signals_time(
     Generates a series of plots representing oscilloscope waveforms over time, where each subplot corresponds
     to a measurement in the given data collection.
 
-    Parameters:
     ----------
     data_collection : OscilloscopeMeasurementDataCollection
         A collection of oscilloscope measurement data, containing multiple waveforms per measurement.
@@ -140,10 +140,6 @@ def plot_oscilloscope_signals_time(
         **figure_kwargs,
     )
 
-    smallest_range = None
-    smallest_start = None
-    smallest_end = None
-
     parameter_tables_list = []
 
     for i, osc_measurement_data in enumerate(data_collection.collection):
@@ -176,8 +172,8 @@ def plot_oscilloscope_signals_time(
             current_range = end_time - start_time
 
             # Update the smallest range if the current one is smaller
-            if smallest_range is None or current_range < smallest_range:
-                smallest_range = current_range
+            if smallest_range_s is None or current_range < smallest_range_s:
+                smallest_range_s = current_range
                 smallest_start = start_time
                 smallest_end = end_time
 

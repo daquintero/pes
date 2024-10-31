@@ -41,12 +41,3 @@ class PielBaseModel(pydantic.BaseModel):
         extra = "ignore"
         validate_assignment = True
         strict = True
-
-    def supplied_parameters(self):
-        """
-        Returns a list of parameter names that have been supplied (i.e., are not None).
-
-        Returns:
-            list[str]: A list of parameter names with non-None values.
-        """
-        return [param for param, value in self.__dict__.items() if value is not None]

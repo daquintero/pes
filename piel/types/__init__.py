@@ -134,12 +134,15 @@ from piel.types.signal.dc_data import (
 
 from piel.types.signal.frequency.core import Phasor
 
-from piel.types.signal.frequency.generic import PhasorTypes
+from piel.types.signal.frequency.generic import (
+    PhasorTypes,
+)
 
 from piel.types.signal.frequency.transmission import (
     PathTransmission,
     NetworkTransmission,
     FrequencyTransmissionModel,
+    FrequencyTransmissionList,
 )
 
 from piel.types.signal.frequency.metrics import (
