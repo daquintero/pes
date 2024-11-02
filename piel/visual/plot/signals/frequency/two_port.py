@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def plot_s21_gain_per_dBm(
+def plot_s21_gain_per_input_power_dBm(
     network_transmission: NetworkTransmission,
     fig: Optional[mpl_fig.Figure] = None,
     axs: Optional[mpl_axes.Axes] = None,
