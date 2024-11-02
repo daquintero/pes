@@ -52,7 +52,39 @@ def offset_path_transmission(path_transmission, offset: float):
     return new_path_transmission
 
 
-def offset_network_transmission(network_transmission, path_index: int, offset: float):
+def offset_network_transmission_input_magnitude(network_transmission, offset: float):
+    """
+    Creates a new NetworkTransmission with the magnitude of the specified Phasor offset by a given value.
+
+    Args:
+        network_transmission (NetworkTransmission): The original NetworkTransmission instance.
+        offset (float): The value to offset the magnitude by.
+
+    Returns:
+        NetworkTransmission: A new NetworkTransmission instance with the offset applied.
+    """
+    from piel.types import NetworkTransmission
+    from .core import offset_phasor_magnitude
+
+    # Make a copy of the network list to modify the target PathTransmission
+    target_input_offset = network_transmission.input
+
+    # logger.debug(type(target_path))
+    offset_input_phasor_i = offset_phasor_magnitude(target_input_offset, offset)
+
+    # Create a new NetworkTransmission with the modified network list and original input
+    new_network_transmission = NetworkTransmission(
+        input=offset_input_phasor_i,
+        network=network_transmission.network,
+    )
+    # TODO: Verify question mark on immutability with this approach?
+
+    return new_network_transmission
+
+
+def offset_network_transmission_path_magnitude(
+    network_transmission, path_index: int, offset: float
+):
     """
     Creates a new NetworkTransmission with the magnitude of the specified Phasor offset by a given value.
 
