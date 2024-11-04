@@ -16,101 +16,108 @@ def plot_simple(
     ylabel: str | Unit | None = None,
     xlabel: str | Unit | None = None,
     fig: Optional[Any] = None,
-    axs: Optional[list[Any]] = None,
+    axs: Optional[List[Any]] = None,
     title: Optional[str] = None,
     plot_args: list = None,
     plot_kwargs: dict = None,
     figure_kwargs: dict = None,
     legend_kwargs: dict = None,
     title_kwargs: dict = None,
+    xlabel_kwargs: dict = None,
+    ylabel_kwargs: dict = None,
     *args,
     **kwargs,
 ) -> tuple:
     """
-    Plot a simple line graph. This function abstracts the basic files representation while
-    keeping the flexibility of the matplotlib library.
+    Plot a simple line graph. This function abstracts the basic plotting functionality
+    while keeping the flexibility of the matplotlib library, allowing customization of
+    labels, titles, and figure properties.
 
     Args:
-        x_data (np.ndarray): X axis files.
-        y_data (np.ndarray): Y axis files.
-        label (Optional[str], optional): Label for the plot. Defaults to None.
-        ylabel (Optional[str], optional): Y axis label. Defaults to None.
-        xlabel (Optional[str], optional): X axis label. Defaults to None.
-        fig (Optional[plt.Figure], optional): Matplotlib figure. Defaults to None.
-        axs (Optional[list[plt.Axes]], optional): Matplotlib axes. Defaults to None.
+        x_data (np.ndarray): Data for the X-axis.
+        y_data (np.ndarray): Data for the Y-axis.
+        label (Optional[str], optional): Label for the plot line, useful for legends. Defaults to None.
+        ylabel (str | Unit | None, optional): Label for the Y-axis, or a Unit object with a `label` and `base` attribute. Defaults to None.
+        xlabel (str | Unit | None, optional): Label for the X-axis, or a Unit object with a `label` and `base` attribute. Defaults to None.
+        fig (Optional[Any], optional): Matplotlib Figure object to be used. Defaults to None.
+        axs (Optional[List[Any]], optional): List of Matplotlib Axes objects. Defaults to None.
         title (Optional[str], optional): Title of the plot. Defaults to None.
-        *args: Additional arguments passed to plt.plot().
-        **kwargs: Additional keyword arguments passed to plt.plot().
+        plot_args (list, optional): Positional arguments passed to plt.plot(). Defaults to None.
+        plot_kwargs (dict, optional): Keyword arguments passed to plt.plot(). Defaults to None.
+        figure_kwargs (dict, optional): Keyword arguments for figure creation. Defaults to None.
+        legend_kwargs (dict, optional): Keyword arguments for legend customization. Defaults to None.
+        title_kwargs (dict, optional): Keyword arguments for title customization. Defaults to None.
+        xlabel_kwargs (dict, optional): Keyword arguments for X-axis label customization. If 'show' is set to False, the X-axis label will not be displayed. Defaults to None.
+        ylabel_kwargs (dict, optional): Keyword arguments for Y-axis label customization. If 'show' is set to False, the Y-axis label will not be displayed. Defaults to None.
+        *args: Additional positional arguments for plt.plot().
+        **kwargs: Additional keyword arguments for plt.plot().
 
     Returns:
         Tuple[plt.Figure, plt.Axes]: The figure and axes of the plot.
+
     """
 
     if figure_kwargs is None:
-        figure_kwargs = {
-            "tight_layout": True,
-        }
+        figure_kwargs = {"tight_layout": True}
 
     if fig is None and axs is None:
         fig, axs = create_axes_per_figure(rows=1, columns=1, **figure_kwargs)
 
     if plot_kwargs is None:
-        if label is not None:
-            plot_kwargs = {"label": label}
-        else:
-            plot_kwargs = {}
+        plot_kwargs = {"label": label} if label is not None else {}
 
-    if title_kwargs is None:
-        title_kwargs = {}
+    title_kwargs = title_kwargs or {}
+    xlabel_kwargs = xlabel_kwargs or {"show": True}
+    ylabel_kwargs = ylabel_kwargs or {"show": True}
 
-    if plot_args is None:
-        plot_args = list()
+    plot_args = plot_args or []
 
+    # Handle xlabel unit correction
     x_correction = 1
-    if xlabel is None:
-        pass
-    elif isinstance(xlabel, str):
-        pass
-    elif isinstance(xlabel, Unit):
+    if xlabel and isinstance(xlabel, Unit):
         x_correction = xlabel.base
-        logger.warning(
-            f"Data correction of 1/{x_correction} from unit definition {xlabel} will be applied on x-axis"
-        )
         xlabel = xlabel.label
 
+    # Handle ylabel unit correction
     y_correction = 1
-    if ylabel is None:
-        pass
-    elif isinstance(ylabel, str):
-        pass
-    elif isinstance(ylabel, Unit):
+    if ylabel and isinstance(ylabel, Unit):
         y_correction = ylabel.base
-        logger.warning(
-            f"Data correction of 1/{y_correction} from unit definition {ylabel} will be applied on y-axis."
-        )
         ylabel = ylabel.label
 
+    # Plotting
     ax = axs[0]
-    x_data = np.array(x_data)
-    y_data = np.array(y_data)
-    ax.plot(x_data / x_correction, y_data / y_correction, *plot_args, **plot_kwargs)
+    ax.plot(
+        np.array(x_data) / x_correction,
+        np.array(y_data) / y_correction,
+        *plot_args,
+        **plot_kwargs,
+    )
 
-    if xlabel is not None:
-        ax.set_xlabel(xlabel)
+    # Set x and y labels with keyword arguments if 'show' is not False
+    if xlabel is not None and xlabel_kwargs.get("show", True):
+        xlabel_kwargs.pop(
+            "show", None
+        )  # Remove 'show' from kwargs to avoid passing it to set_xlabel
+        ax.set_xlabel(xlabel, **xlabel_kwargs)
 
-    if ylabel is not None:
-        ax.set_ylabel(ylabel)
+    if ylabel is not None and ylabel_kwargs.get("show", True):
+        ylabel_kwargs.pop(
+            "show", None
+        )  # Remove 'show' from kwargs to avoid passing it to set_ylabel
+        ax.set_ylabel(ylabel, **ylabel_kwargs)
 
+    # Set title with keyword arguments
     if title is not None:
         ax.set_title(title, **title_kwargs)
 
-    if (label is not None) and (legend_kwargs is not None):
+    # Add legend if label and legend_kwargs are provided
+    if label is not None and legend_kwargs is not None:
         ax.legend(**legend_kwargs)
 
-    # Rotate x-axis labels for better fit
-    for label in ax.get_xticklabels():
-        label.set_rotation(45)
-        label.set_ha("right")
+    # Rotate x-axis labels for better readability
+    for xtick_label in ax.get_xticklabels():
+        xtick_label.set_rotation(45)
+        xtick_label.set_ha("right")
 
     return fig, axs
 
