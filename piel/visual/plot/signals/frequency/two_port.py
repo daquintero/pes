@@ -249,7 +249,12 @@ def plot_s21_magnitude_per_input_frequency(
 
     dataframe = extract_two_port_network_transmission_to_dataframe(network_transmission)
     f_in_Hz = dataframe.frequency_Hz
-    s21_db = dataframe.s_21_magnitude_dBm
+    if kwargs.get("bug_patch", True):
+        s21_db = (
+            dataframe.s_12_magnitude_dBm
+        )  # TODO FIX THIS BUT HOW? Something is weird somewhere
+    else:
+        s21_db = dataframe.s_21_magnitude_dBm
 
     # Plot S21
     fig, axs = plot_simple(

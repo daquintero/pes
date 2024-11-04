@@ -17,6 +17,7 @@ def plot_multi_data_time_signal_different(
     ylabel: str | Unit | list[Unit] | list = None,
     title: str | Unit | list = None,
     time_range_s: Tuple[float, float] = None,  # Add time_range parameter
+    labels: list[str] = None,
     **kwargs,
 ):
     """
@@ -96,6 +97,11 @@ def plot_multi_data_time_signal_different(
         if (len(signal.time_s) == 0) or (signal.time_s is None):
             raise ValueError(f"Signal '{signal.data_name}' has an empty time_s array.")
 
+        if labels is None:
+            label_i = signal.data_name
+        else:
+            label_i = labels[i]
+
         time = np.array(signal.time_s) / x_correction
         data = np.array(signal.data) / y_correction[i]
 
@@ -105,11 +111,7 @@ def plot_multi_data_time_signal_different(
             time = time[mask]
             data = data[mask] / y_correction[i]
 
-        axs[i].plot(
-            time,
-            data,
-            label=signal.data_name,
-        )
+        axs[i].plot(time, data, label=label_i)
 
         axs[i].set_ylabel(ylabel[i])
 
