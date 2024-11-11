@@ -14,3 +14,5 @@ examples=(
 for example in "${examples[@]}"; do
     coverage run --append "docs/examples/$example"
 done
+
+coverage report -m
