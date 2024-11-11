@@ -1,2 +1,7 @@
+[run]
+branch = True
+parallel = True
+
 [report]
 sort = -cover
+show_missing = True
