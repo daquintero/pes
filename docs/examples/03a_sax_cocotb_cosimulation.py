@@ -1,14 +1,15 @@
 # # Digital & Photonic Cosimulation with `sax` and `cocotb`
 
 # <div style="padding: 10px; border-radius: 5px;">
-# <strong>⚠️ Warning:</strong> This example requires uses packages which are locally available when cloning and installing the `stable` verision of the github source code. See example setup as follows:
+# <strong>⚠️ Warning:</strong> This example requires the <code>piel-nix</code> tools environment.
+# <a href="https://piel.readthedocs.io/en/latest/sections/environment/index.html" target="_blank">See environment configuration documentation</a>.
 # </div>
 
 # + active=""
 # !git clone https://github.com/daquintero/piel.git
 # !cd piel/
-# !pip install -e .[tools]
-# !pip install -r requirements_notebooks.txt
+# !source scripts/install_piel_nix.sh
+# !nix develop .
 # -
 
 # We begin by importing a parametric circuit from `gdsfactory`:
@@ -404,10 +405,12 @@ mixed_switch_lattice_circuit
 # ### Model Composition
 
 # +
-mixed_switch_lattice_circuit_netlist = (
-    mixed_switch_lattice_circuit.get_netlist_recursive(allow_multiple=True)
+mixed_switch_lattice_circuit_netlist = piel.tools.gdsfactory.get_netlist_recursive(
+    mixed_switch_lattice_circuit, allow_multiple=True
 )
-top_level_name = (mixed_switch_lattice_circuit.get_netlist())["name"]
+top_level_name = (piel.tools.gdsfactory.get_netlist(mixed_switch_lattice_circuit))[
+    "name"
+]
 
 mixed_switch_lattice_circuit_netlist.keys()
 # -

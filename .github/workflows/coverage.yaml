@@ -52,8 +52,7 @@ jobs:
     - name: Run Coverage Tests
       run: |
         nix develop . --command bash -c "
-          coverage run -m pytest -rA tests/ &&
-          coverage report -m &&
+          source scripts/test_coverage.sh &&
           total=\$(coverage report | tail -n1 | awk '{print \$NF}' | tr -d '%') &&
           echo \"total=\${total}\" >> \$GITHUB_ENV &&
           echo \"### Total coverage: \${total}%\"

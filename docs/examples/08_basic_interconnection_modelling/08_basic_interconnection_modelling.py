@@ -108,7 +108,7 @@ basic_coaxial_cable_materials
 
 temperature_range_limits_K = tuple([70, 273])
 
-help(calculate_coaxial_cable_heat_transfer)
+# help(calculate_coaxial_cable_heat_transfer)
 
 basic_coaxial_cable_heat_transfer = calculate_coaxial_cable_heat_transfer(
     temperature_range_K=temperature_range_limits_K,

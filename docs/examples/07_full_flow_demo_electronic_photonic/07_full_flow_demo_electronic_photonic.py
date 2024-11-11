@@ -1,16 +1,16 @@
 # # `piel` Electronic-Photonic Co-Design - Full Flow Demo
 
 # <div style="padding: 10px; border-radius: 5px;">
-# <strong>⚠️ Warning:</strong> This example requires using the piel nix environment which are locally available when cloning and installing the `stable` verision of the github source code. See example setup as follows
+# <strong>⚠️ Warning:</strong> This example requires the <code>piel-nix</code> tools environment.
+# <a href="https://piel.readthedocs.io/en/latest/sections/environment/index.html" target="_blank">See environment configuration documentation</a>.
 # </div>
-#
-# Note that this is only CI tested in an ubuntu environment:
-# ```
-# git clone https://github.com/daquintero/piel.git
-# source scripts/install_piel_nix.sh
-# ```
-#
-# You can verify you have the tools required by running the following magic cells:
+
+# + active=""
+# !git clone https://github.com/daquintero/piel.git
+# !cd piel/
+# !source scripts/install_piel_nix.sh
+# !nix develop .
+# -
 
 # ! which openlane
 
