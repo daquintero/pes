@@ -16,19 +16,31 @@ examples=(
     "08_basic_interconnection_modelling/08_basic_interconnection_modelling.py"
     "08a_pcb_interposer_characterisation/08a_pcb_interposer_characterisation.py"
     "09a_model_rf_amplifier/09a_model_rf_amplifier.py"
+    "09b_optical_delay/09b_optical_delay.py"
     # "06_component_codesign_basics.py"  # Uncomment if needed
 )
 
-# Change to examples directory
-cd docs/examples
+# Base directory for examples
+examples_dir="docs/examples"
 
 # Run each example script with coverage, appending to the same coverage data file
 for example in "${examples[@]}"; do
-    coverage run --branch --append "$example"
-done
+    # Full path to the example file
+    example_path="$examples_dir/$example"
 
-# Return to base directory
-cd ../../
+    # Extract directory and filename
+    example_dir="$(dirname "$example_path")"
+    example_file="$(basename "$example_path")"
+
+    # Enter the directory
+    cd "$example_dir" || exit
+
+    # Run the script with coverage
+    coverage run --branch --append "$example_file"
+
+    # Return to base directory
+    cd - > /dev/null
+done
 
 # Generate the coverage report
 coverage report -m
