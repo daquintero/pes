@@ -203,8 +203,8 @@ branch = true
 parallel = true
 source = ["piel/"]
 omit = [
-    "docs/examples/*",
-    "*/tests/*",
+#    "docs/examples/*",
+#    "tests/*",
     "/nix/*"
 ]
 
@@ -213,6 +213,6 @@ sort = "-cover"
 show_missing = true
 omit = [
     "docs/examples/*",
-    "*/tests/*",
+    "tests/*",
     "/nix/*"
 ]

@@ -23,6 +23,7 @@ from ..tools.sax.utils import sax_to_s_parameters_standard_matrix
 from ..tools.qutip import fock_states_only_individual_modes
 from ..models.frequency.defaults import get_default_models
 from ..integration.thewalrus_qutip import fock_transition_probability_amplitude
+from piel.tools.gdsfactory import get_netlist_recursive, get_netlist
 
 logger = logging.getLogger(__name__)
 
@@ -288,7 +289,7 @@ def compose_network_matrix_from_models(
 
     if netlist_function is None:
         # Generate the netlist recursively
-        netlist = circuit_component.get_netlist_recursive(allow_multiple=True)
+        netlist = get_netlist_recursive(circuit_component, allow_multiple=True)
 
         switch_instance_list_i = get_matched_model_recursive_netlist_instances(
             recursive_netlist=netlist,
@@ -465,7 +466,7 @@ def generate_s_parameter_circuit_from_photonic_circuit(
 
     if netlist_function is None:
         # Step 2: Generate the netlist recursively
-        netlist = circuit.get_netlist_recursive(allow_multiple=True)
+        netlist = get_netlist_recursive(circuit, allow_multiple=True)
     else:
         netlist = netlist_function(circuit)
 
@@ -481,7 +482,7 @@ def generate_s_parameter_circuit_from_photonic_circuit(
         Custom exception mapping.
         """
         # Step 3: Identify the top-level circuit name
-        top_level_name = circuit.get_netlist()["name"]
+        top_level_name = get_netlist(circuit)["name"]
 
         # Step 4: Get required measurement for the top-level circuit
         required_models = sax.get_required_circuit_models(
