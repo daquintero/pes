@@ -1,4 +1,7 @@
 from typing import Literal, Optional
+from functools import partial
+from gdsfactory.get_netlist import get_netlist as get_netlist_raw
+from gdsfactory.get_netlist import get_netlist_recursive as get_netlist_recursive_raw
 
 
 def get_matched_ports_tuple_index(
@@ -120,3 +123,7 @@ def get_input_ports_index(
         raise ValueError(f"Sorting algorithm '{sorting_algorithm}' is not supported.")
 
     return ports_index_order
+
+
+get_netlist = partial(get_netlist_raw, extend_recursive_port_names=True)
+get_netlist_recursive = partial(get_netlist_recursive_raw, get_netlist_func=get_netlist)
