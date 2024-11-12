@@ -1,1 +1,0 @@
-from .patch import SchematicEditor
