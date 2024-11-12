@@ -123,15 +123,15 @@ def get_input_ports_index(
     return ports_index_order
 
 
-def get_netlist(**kwargs):
+def get_netlist(*args, **kwargs):
     from gdsfactory.get_netlist import get_netlist as get_netlist_raw
 
-    return get_netlist_raw(**kwargs, extend_recursive_port_names=True)
+    return get_netlist_raw(*args, **kwargs, extend_recursive_port_names=True)
 
 
-def get_netlist_recursive(**kwargs):
+def get_netlist_recursive(*args, **kwargs):
     from gdsfactory.get_netlist import (
         get_netlist_recursive as get_netlist_recursive_raw,
     )
 
-    return get_netlist_recursive_raw(**kwargs, get_netlist_func=get_netlist)
+    return get_netlist_recursive_raw(*args, **kwargs, get_netlist_func=get_netlist)

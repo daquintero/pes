@@ -200,6 +200,7 @@ markers = [
 
 [tool.coverage.run]
 branch = true
+parallel = true
 source = ["piel/"]
 omit = [
     "docs/examples/*",
@@ -212,5 +213,6 @@ sort = "-cover"
 show_missing = true
 omit = [
     "docs/examples/*",
+    "*/tests/*",
     "/nix/*"
 ]

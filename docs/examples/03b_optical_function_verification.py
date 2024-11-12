@@ -421,10 +421,10 @@ chain_3_mode_lattice_circuit = component_lattice_generic(
 )
 
 # +
-chain_3_mode_lattice_circuit_netlist = (
-    chain_3_mode_lattice_circuit.get_netlist_recursive(allow_multiple=True)
+chain_3_mode_lattice_circuit_netlist = piel.tools.gdsfactory.get_netlist_recursive(
+    chain_3_mode_lattice_circuit, allow_multiple=True
 )
-top_level_name = (chain_3_mode_lattice_circuit.get_netlist())["name"]
+top_level_name = piel.tools.gdsfactory.get_netlist(chain_3_mode_lattice_circuit)["name"]
 
 
 recursive_composed_required_models = sax.get_required_circuit_models(

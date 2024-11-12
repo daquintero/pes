@@ -46,5 +46,15 @@ for example in "${examples[@]}"; do
     cd - > /dev/null
 done
 
+# echo "Coverage Data Debug Before"
+# coverage debug data  # See what data files and paths are included
+# coverage debug config
+# coverage debug premain
+
+# coverage combine
+
+# echo "Coverage Data Debug After"
+# coverage debug data  # See what data files and paths are included
+
 # Generate the coverage report
-coverage report -m
+# coverage report -m
