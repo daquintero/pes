@@ -1,7 +1,4 @@
 from typing import Literal, Optional
-from functools import partial
-from gdsfactory.get_netlist import get_netlist as get_netlist_raw
-from gdsfactory.get_netlist import get_netlist_recursive as get_netlist_recursive_raw
 
 
 def get_matched_ports_tuple_index(
@@ -125,5 +122,14 @@ def get_input_ports_index(
     return ports_index_order
 
 
+import importlib
+from functools import partial
+
+# Dynamically import functions
+gdsfactory_get_netlist = importlib.import_module("gdsfactory.get_netlist")
+get_netlist_raw = getattr(gdsfactory_get_netlist, "get_netlist")
+get_netlist_recursive_raw = getattr(gdsfactory_get_netlist, "get_netlist_recursive")
+
+# Create partial functions with required arguments
 get_netlist = partial(get_netlist_raw, extend_recursive_port_names=True)
 get_netlist_recursive = partial(get_netlist_recursive_raw, get_netlist_func=get_netlist)
