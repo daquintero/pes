@@ -1,5 +1,6 @@
 from typing import Optional, Union, Set, List, Dict
 from piel.types import RFAmplifierCollection, ComponentMetrics, ScalarMetric
+from piel.visual.table.latex import escape_latex
 
 default_metric_header_map = {
     "bandwidth_Hz": r"\textbf{Bandwidth} (GHz)",
@@ -14,25 +15,6 @@ default_metric_header_map = {
     "technology_material": r"\textbf{Technology Material}",
     # Add more mappings as needed
 }
-
-
-# Function to escape LaTeX special characters
-def escape_latex(s: str) -> str:
-    replacements = {
-        "&": r"\&",
-        "%": r"\%",
-        "$": r"\$",
-        "#": r"\#",
-        "_": r"\_",
-        "{": r"\{",
-        "}": r"\}",
-        "~": r"\textasciitilde{}",
-        "^": r"\textasciicircum{}",
-        "\\": r"\textbackslash{}",
-    }
-    for original, replacement in replacements.items():
-        s = s.replace(original, replacement)
-    return s
 
 
 # Function to format metric values

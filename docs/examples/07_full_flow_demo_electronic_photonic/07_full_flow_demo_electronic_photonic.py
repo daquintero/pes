@@ -46,6 +46,7 @@
 # We begin by importing a parametric circuit from `gdsfactory`:
 import hdl21 as h
 import numpy as np
+import jax.numpy as jnp
 import pandas as pd
 from gdsfactory.generic_tech import get_generic_pdk
 import piel
@@ -54,6 +55,7 @@ from piel.models.physical.photonic import (
     component_lattice_generic,
     straight_heater_metal_simple,
 )
+import os
 
 # First, let's set up the filesystem in the directory in which all our files will be generated and stored. This is really an extension of a full mixed-signal design compatible with the tools supported by `piel`.
 
@@ -147,7 +149,26 @@ chain_fock_state_transitions = piel.flows.get_state_phase_transitions(
     target_mode_index=2,
 )
 
+chain_fock_state_transitions.transmission_data[0]
+
 chain_fock_state_transitions.transition_dataframe
+
+transition_dataframe_latex = piel.visual.table.electro_optic.compose_optical_state_transition_dataframe_latex_table(
+    chain_fock_state_transitions.transition_dataframe
+)
+target_output_dataframe_latex = piel.visual.table.electro_optic.compose_optical_state_transition_dataframe_latex_table(
+    chain_fock_state_transitions.target_output_dataframe
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=transition_dataframe_latex,
+    file_name="chain_3_transition_dataframe.tex",
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=target_output_dataframe_latex,
+    file_name="chain_3_target_dataframe.tex",
+)
 
 # We can plot this to show the electronic-photonic behaviour we want to see:
 
@@ -162,7 +183,7 @@ chain_fock_state_transitions.target_output_dataframe
 # Now, each of these electronic phases applied correspond to a given digital value that we want to implement on the electronic logic.
 
 basic_ideal_phase_map = piel.models.logic.electro_optic.linear_bit_phase_map(
-    bits_amount=5, final_phase_rad=np.pi, initial_phase_rad=0
+    bits_amount=5, final_phase_rad=jnp.pi, initial_phase_rad=0
 )
 basic_ideal_phase_map.dataframe
 

@@ -6,8 +6,8 @@ from functools import partial
 import jax.numpy as jnp
 import numpy as np
 import pandas as pd
-from .core import ArrayTypes, PackageArrayType, TupleIntType
-from .digital import AbstractBitsType, BitsType, LogicSignalsList
+from piel.types.core import ArrayTypes, PackageArrayType, TupleIntType
+from piel.types.digital import AbstractBitsType, BitsType, LogicSignalsList
 
 
 def convert_array_type(array: ArrayTypes, output_type: PackageArrayType):

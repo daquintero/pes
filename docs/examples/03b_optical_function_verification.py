@@ -340,7 +340,7 @@ target_output_transition_mzi_2x2 = [
         "target_mode_output": None,
     },
 ]
-target_optical_state_transition_mzi_2x2 = piel.types.OpticalStateTransitions(
+target_optical_state_transition_mzi_2x2 = piel.types.OpticalStateTransitionCollection(
     transmission_data=target_output_transition_mzi_2x2,
     mode_amount=2,
 )

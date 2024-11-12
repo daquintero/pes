@@ -17,6 +17,7 @@ from piel.utils import *  # NOQA: F403
 from piel.connectivity import *  # NOQA: F403
 
 import piel.analysis as analysis  # NOQA: F401
+import piel.conversion as conversion  # NOQA: F401
 import piel.base as base  # NOQA: F401
 import piel.experimental as experimental  # NOQA: F401
 import piel.file_system as file_system  # NOQA: F401

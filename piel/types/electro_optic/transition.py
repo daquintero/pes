@@ -1,5 +1,5 @@
 """
-This module defines the OpticalStateTransitions class and related measurement for managing phase transitions in electro-optic measurement.
+This module defines the OpticalStateTransitionCollection class and related measurement for managing phase transitions in electro-optic measurement.
 It also provides a typed dictionary for Fock state phase transitions and includes necessary imports and type aliases.
 """
 
@@ -19,7 +19,7 @@ PhaseMapType: Alias for phase map measurement.
 """
 
 
-class FockStatePhaseTransitionType(TypedDict):
+class FockStatePhaseTransition(TypedDict):
     """
     A typed dictionary representing a phase transition for Fock states in an electro-optic model.
 
@@ -45,17 +45,17 @@ PhaseTransitionTypes: A literal type for phase transition measurement.
     - "bar": Refers to a bar-type phase transition.
 """
 
-OpticalTransmissionType = FockStatePhaseTransitionType
+OpticalTransmission = FockStatePhaseTransition
 
 
-class OpticalStateTransitions(PielBaseModel):
+class OpticalStateTransitionCollection(PielBaseModel):
     """
     A model representing transitions between optical states, specifically for Fock states in an electro-optic system.
 
     Attributes:
         mode_amount (int): The number of modes in the system.
         target_mode_index (int): The index of the target mode in the system.
-        transmission_data (list[FockStatePhaseTransitionType]): A list of Fock state phase transition mappings.
+        transmission_data (list[FockStatePhaseTransition]): A list of Fock state phase transition mappings.
 
     Properties:
         transition_dataframe (pd.DataFrame): A DataFrame representation of the transmission files.
@@ -78,9 +78,9 @@ class OpticalStateTransitions(PielBaseModel):
         The index of the target mode in the system.
     """
 
-    transmission_data: list[OpticalTransmissionType]
+    transmission_data: list[OpticalTransmission]
     """
-    transmission_data (list[FockStatePhaseTransitionType]):
+    transmission_data (list[FockStatePhaseTransition]):
         A list of dictionaries representing the phase transitions for Fock states.
     """
 

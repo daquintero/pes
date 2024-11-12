@@ -12,8 +12,8 @@ from ..types import (
     LogicSignalsList,
     PathTypes,
     TruthTable,
-    convert_dataframe_to_bits,
 )
+from piel.conversion import convert_dataframe_to_bits
 from ..tools.cocotb import (
     configure_cocotb_simulation,
     run_cocotb_simulation,

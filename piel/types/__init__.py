@@ -82,8 +82,8 @@ from piel.types.electrical.rf_passives import (
 )
 
 from piel.types.electro_optic.transition import (
-    FockStatePhaseTransitionType,
-    OpticalStateTransitions,
+    FockStatePhaseTransition,
+    OpticalStateTransitionCollection,
     PhaseMapType,
     PhaseTransitionTypes,
     SwitchFunctionParameter,
@@ -199,15 +199,6 @@ from piel.types.reference import Reference
 from piel.types.quantity import Quantity
 
 # Always last
-from piel.types.type_conversion import (
-    a2d,
-    absolute_to_threshold,
-    convert_array_type,
-    convert_tuple_to_string,
-    convert_2d_array_to_string,
-    convert_to_bits,
-    convert_dataframe_to_bits,
-)
 
 from piel.types.units import (
     Unit,
