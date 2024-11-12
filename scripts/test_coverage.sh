@@ -1,7 +1,7 @@
 # Run from base directory
 export COVERAGE_FILE="$(pwd)/.coverage"
-echo "$COVERAGE_FILE"
-rm $COVERAGE_FILE
+echo "COVERAGE_FILE: ${COVERAGE_FILE}"
+rm -f $COVERAGE_FILE
 coverage run --branch -m pytest tests/
 
 # List of example scripts
@@ -25,6 +25,7 @@ examples_dir="docs/examples"
 
 # Run each example script with coverage, appending to the same coverage data file
 for example in "${examples[@]}"; do
+    echo "Running: ${example}"
     # Full path to the example file
     example_path="$examples_dir/$example"
 
@@ -37,6 +38,7 @@ for example in "${examples[@]}"; do
 
     # Run the script with coverage
     coverage run --branch --append "$example_file"
+    echo "Appending coverage to: ${COVERAGE_FILE}"
 
     # Return to base directory
     cd - > /dev/null

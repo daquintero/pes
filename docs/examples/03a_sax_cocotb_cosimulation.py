@@ -1,7 +1,7 @@
 # # Digital & Photonic Cosimulation with `sax` and `cocotb`
 
 # <div style="padding: 10px; border-radius: 5px;">
-# <strong>⚠️ Warning:</strong> This example requires uses packages which are locally available when cloning and installing the `stable` verision of the github source code. See example setup as follows:
+# <strong>⚠️ Warning:</strong> This example requires using the `piel-nix`  environment https://piel.readthedocs.io/en/latest/sections/environment/index.html).
 # </div>
 
 # + active=""
