@@ -1,7 +1,12 @@
 [run]
 branch = True
-source = piel
+source = piel/
+omit =
+    docs/examples/*
+    */tests/*
 
 [report]
 sort = -cover
 show_missing = True
+omit =
+    docs/examples/*
