@@ -39,6 +39,8 @@ for example in "${examples[@]}"; do
     # Run the script with coverage
     coverage run --branch --append "$example_file"
     echo "Appending coverage to: ${COVERAGE_FILE}"
+    total=\$(coverage report | tail -n1 | awk '{print \$NF}' | tr -d '%')
+    echo \"### Total coverage: \${total}%\"
 
     # Return to base directory
     cd - > /dev/null
