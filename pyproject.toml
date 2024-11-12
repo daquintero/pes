@@ -203,12 +203,14 @@ branch = true
 source = ["piel/"]
 omit = [
     "docs/examples/*",
-    "*/tests/*"
+    "*/tests/*",
+    "/nix/"
 ]
 
 [tool.coverage.report]
 sort = "-cover"
 show_missing = true
 omit = [
-    "docs/examples/*"
+    "docs/examples/*",
+    "/nix/"
 ]
