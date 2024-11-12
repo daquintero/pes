@@ -197,3 +197,18 @@ markers = [
 "__init__.py" = ["E402", "F401"]
 "piel/units/string.py" = ["F403", "F405"]
 "**/{tests,docs,tools}/*" = ["E402", "F401", "F841"]
+
+[tool.coverage.run]
+branch = true
+source = ["piel/"]
+omit = [
+    "docs/examples/*",
+    "*/tests/*"
+]
+
+[tool.coverage.report]
+sort = "-cover"
+show_missing = true
+omit = [
+    "docs/examples/*"
+]
