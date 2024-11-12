@@ -51,10 +51,10 @@ done
 # coverage debug config
 # coverage debug premain
 
-# coverage combine
+coverage combine
 
 # echo "Coverage Data Debug After"
 # coverage debug data  # See what data files and paths are included
 
 # Generate the coverage report
-# coverage report -m
+coverage report -m
