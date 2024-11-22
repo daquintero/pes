@@ -1,1 +1,2 @@
 from .metrics import compose_amplifier_collection_performance_latex_table
+from .truth_table import compose_fock_state_truth_table_latex

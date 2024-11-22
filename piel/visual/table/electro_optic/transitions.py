@@ -4,11 +4,21 @@ from piel.visual.table.symbol import convert_tuple_to_pi_fractions
 
 
 # Combined function to convert DataFrame to Fock state formatted LaTeX table
-def compose_optical_state_transition_dataframe_latex_table(df) -> str:
+def compose_optical_state_transition_dataframe_latex_table(
+    df,
+    headers: list = None,
+) -> str:
     latex_table = "\\begin{tabular}{|c|c|c|c|}\n\\hline\n"
 
     # Column headers
-    headers = ["Phase", "Fock Input", "Fock Output", "Target"]
+    if headers is None:
+        headers = [
+            "$(\\phi_{N},...)$",
+            "$|\\psi_{IN}\\rangle$",
+            "$|\\psi_{OUT}\\rangle$",
+            "Target",
+        ]
+
     latex_table += (
         " & ".join([f"\\textbf{{{escape_latex(header)}}}" for header in headers])
         + " \\\\\n\\hline\n"

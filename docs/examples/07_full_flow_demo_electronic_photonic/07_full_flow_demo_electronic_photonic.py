@@ -124,6 +124,8 @@ def create_switch_fabric():
 chain_3_mode_lattice_circuit = create_switch_fabric()
 chain_3_mode_lattice_circuit
 
+chain_3_mode_lattice_circuit
+
 # ## 2. Extracting our optical-to-electronic control logic truth table
 
 
@@ -249,6 +251,17 @@ truth_table.dataframe
 # |  1 |                    001 |         00000 |         11111 |
 # |  2 |                    010 |         11111 |         00000 |
 
+transition_dataframe_latex = (
+    piel.visual.table.electronic.compose_fock_state_truth_table_latex(
+        truth_table.dataframe
+    )
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=transition_dataframe_latex,
+    file_name="chain_3_truth_table.tex",
+)
+
 truth_table.input_ports
 
 truth_table.output_ports
@@ -366,7 +379,7 @@ cocotb_simulation_data
 
 # Now, we could technically also use this simulation to model our optical signal transmission too.
 
-# +
+# + active=""
 # # Current work in progress move this out of here.
 # simple_ideal_o4_mzi_2x2_plots = piel.experimental.plot_simple_multi_row(
 #     files=mzi2x2_simple_simulation_data_lines,
@@ -382,13 +395,13 @@ cocotb_simulation_data
 #     "../_static/img/examples/03a_sax_active_cosimulation/simple_ideal_o4_mzi_2x2_plots.PNG"
 # )
 
-# +
+# + active=""
 # # Current work in progress move this out of here.
 # import pandas as pd
 # import sax
 # from typing import Callable
-
-
+#
+#
 # def compute_simulation_unitaries(
 #     simulation_data: pd.DataFrame,
 #     phase_mapping_function: Callable,
@@ -399,7 +412,7 @@ cocotb_simulation_data
 # ) -> List[Any]:
 #     """
 #     Processes simulation files to generate a list of unitaries using a digital-to-phase model and a custom library.
-
+#
 #     Args:
 #         simulation_data (pd.DataFrame): DataFrame containing simulation files.
 #         phase_mapping_function (Callable): Function to map files series to phase array.
@@ -410,7 +423,7 @@ cocotb_simulation_data
 #         library_defaults (Dict[str, Any]): Default parameters for the custom model library.
 #         s_parameters_function (Callable): Function to convert model output to S-parameters matrix.
 #         input_ports_order (Tuple[str, str]): Order of input connection for the S-parameters function.
-
+#
 #     Returns:
 #         List[Any]: List of unitaries corresponding to the phase array.
 #     """
@@ -418,46 +431,46 @@ cocotb_simulation_data
 #     data_series = simulation_data[data_series_key]
 #     phase_array = phase_mapping_function(data_series=data_series, phase_map=phase_map)
 #     simulation_data["phase"] = phase_array
-
+#
 #     # Create the circuit model using the netlist and custom library
 #     circuit_model, _ = sax.circuit(netlist=netlist, measurement=custom_library)
-
+#
 #     # Generate unitaries for each phase in the phase array
 #     unitaries = []
 #     for phase in phase_array:
 #         # Compute the unitary for the current phase
 #         unitary = s_parameters_function(circuit_model(sxt={"active_phase_rad": phase}))
 #         unitaries.append(unitary)
-
+#
 #     return unitaries
-
-
+#
+#
 # # def compute_simulation_unitaries():
 # # Inputs
 # # digital-to-phase model
 # # simulation files file
 # # sax-circuit-model library
 # # output returns list of unitaries accordingly
-
+#
 # # basic_ideal_phase_array = (
 # #     piel.measurement.logic.electro_optic.return_phase_array_from_data_series(
 # #         data_series=example_simple_simulation_data.x, phase_map=basic_ideal_phase_map
 # #     )
 # # )
-
+#
 # # example_simple_simulation_data["phase"] = basic_ideal_phase_array
 # # example_simple_simulation_data
-
+#
 # # our_custom_library = piel.measurement.frequency.compose_custom_model_library_from_defaults(
 # #     {"straight_heater_metal_undercut": straight_heater_metal_simple}
 # # )
 # # our_custom_library
-
+#
 # # mzi2x2_model, mzi2x2_model_info = sax.circuit(
 # #     netlist=mzi2x2_2x2_phase_shifter_netlist, measurement=our_custom_library
 # # )
 # # piel.tools.sax.sax_to_s_parameters_standard_matrix(mzi2x2_model(), input_ports_order=("o2", "o1"))
-
+#
 # # mzi2x2_active_unitary_array = list()
 # # for phase_i in example_simple_simulation_data.phase:
 # #     mzi2x2_active_unitary_i = piel.tools.sax.sax_to_s_parameters_standard_matrix(
@@ -471,32 +484,32 @@ cocotb_simulation_data
 # #     mzi2x2_active_unitary_array.append(mzi2x2_active_unitary_i)
 
 
-# +
+# + active=""
 # Inputs
 # digital-to-phase model
 # simulation files file
 # sax-circuit-model library
 # output returns list of unitaries accordingly
-
+#
 # basic_ideal_phase_array = (
 #     piel.measurement.logic.electro_optic.return_phase_array_from_data_series(
 #         data_series=example_simple_simulation_data.x, phase_map=basic_ideal_phase_map
 #     )
 # )
-
+#
 # example_simple_simulation_data["phase"] = basic_ideal_phase_array
 # example_simple_simulation_data
-
+#
 # our_custom_library = piel.measurement.frequency.compose_custom_model_library_from_defaults(
 #     {"straight_heater_metal_undercut": straight_heater_metal_simple}
 # )
 # our_custom_library
-
+#
 # mzi2x2_model, mzi2x2_model_info = sax.circuit(
 #     netlist=mzi2x2_2x2_phase_shifter_netlist, measurement=our_custom_library
 # )
 # piel.tools.sax.sax_to_s_parameters_standard_matrix(mzi2x2_model(), input_ports_order=("o2", "o1"))
-
+#
 # mzi2x2_active_unitary_array = list()
 # for phase_i in example_simple_simulation_data.phase:
 #     mzi2x2_active_unitary_i = piel.tools.sax.sax_to_s_parameters_standard_matrix(
@@ -507,19 +520,19 @@ cocotb_simulation_data
 #         ),
 #     )
 #     mzi2x2_active_unitary_array.append(mzi2x2_active_unitary_i)
-
+#
 # second function up to here
-
+#
 # third function starts here.
-
+#
 # optical_port_input = np.array([1, 0])
 # optical_port_input
-
+#
 # example_optical_power_output = np.dot(
 #     mzi2x2_simple_simulation_data.unitary.iloc[0][0], optical_port_input
 # )
 # example_optical_power_output
-
+#
 # output_amplitude_array_0 = np.array([])
 # output_amplitude_array_1 = np.array([])
 # for unitary_i in mzi2x2_simple_simulation_data.unitary:
@@ -531,17 +544,17 @@ cocotb_simulation_data
 #         output_amplitude_array_1, output_amplitude_i[1]
 #     )
 # output_amplitude_array_0
-
+#
 # mzi2x2_simple_simulation_data["output_amplitude_array_0"] = output_amplitude_array_0
 # mzi2x2_simple_simulation_data["output_amplitude_array_1"] = output_amplitude_array_1
 # mzi2x2_simple_simulation_data
-
+#
 # mzi2x2_simple_simulation_data_lines = piel.experimental.points_to_lines_fixed_transient(
 #     files=mzi2x2_simple_simulation_data,
 #     time_index_name="t",
 #     fixed_transient_time=1,
 # )
-
+#
 # simple_ideal_o3_mzi_2x2_plots = piel.experimental.plot_simple_multi_row(
 #     files=mzi2x2_simple_simulation_data_lines,
 #     x_axis_column_name="t",
@@ -558,6 +571,27 @@ cocotb_simulation_data
 # -
 
 # ## 3b. Digital Chip Implementation
+
+# Note that in order to run this you will need to have a PDK installed locally. This is not provided intentionally within the `piel-nix` environment. You can simply run the following command within the `piel-nix` environment:
+#
+# ```
+# openlane --volare-pdk
+# ```
+
+# +
+# # !openlane --volare-pdk
+# -
+
+# Now you can verify you have the right environment configuration by running the smoke test:
+
+# +
+# # !openlane --smoke-test
+# -
+
+# You should see:
+# ```
+# [09:07:02] INFO     Smoke test passed.                           ]8;id=893291;file:///nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/lib/python3.11/site-packages/openlane/__main__.py\__main__.py]8;;\:]8;id=568740;file:///nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/lib/python3.11/site-packages/openlane/__main__.py#267\267]8;;\
+# ```
 
 component = piel.flows.layout_truth_table(
     truth_table=truth_table,
