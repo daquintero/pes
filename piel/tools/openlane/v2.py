@@ -86,7 +86,7 @@ def generate_flow_setup(
 
     if logic_implementation_type == "combinatorial":
         from openlane.flows import SequentialFlow
-        from openlane.steps import Yosys, OpenROAD, Magic, Netgen
+        from openlane.steps import Yosys, OpenROAD, Magic, Netgen, Checker
 
         class DigitalCombinatorialFlow(SequentialFlow):
             Steps = [
@@ -97,14 +97,17 @@ def generate_flow_setup(
                 OpenROAD.GeneratePDN,
                 OpenROAD.IOPlacement,
                 OpenROAD.GlobalPlacement,
+                OpenROAD.RepairDesign,
                 OpenROAD.DetailedPlacement,
                 OpenROAD.GlobalRouting,
                 OpenROAD.DetailedRouting,
                 OpenROAD.FillInsertion,
                 Magic.StreamOut,
                 Magic.DRC,
+                Checker.MagicDRC,
                 Magic.SpiceExtraction,
                 Netgen.LVS,
+                Checker.LVS,
             ]
 
         print(configuration)
