@@ -59,6 +59,7 @@ def layout_amaranth_truth_table_through_openlane(
     parent_directory: PathTypes,
     target_directory_name: Optional[str] = None,
     openlane_version: Literal["v1", "v2"] = "v2",
+    openlane_configuration: dict | None = None,
     **kwargs,
 ):
     """
@@ -137,18 +138,20 @@ def layout_amaranth_truth_table_through_openlane(
 
     # Configure and run the OpenLane flow based on the specified version
     if openlane_version == "v1":
-        our_amaranth_openlane_config = test_basic_open_lane_configuration_v1
+        if openlane_configuration is None:
+            openlane_configuration = test_basic_open_lane_configuration_v1
         write_configuration_openlane_v1(
-            configuration=our_amaranth_openlane_config,
+            configuration=openlane_configuration,
             design_directory=design_directory,
         )
         # TODO: Additional steps for OpenLane v1 configuration
 
     elif openlane_version == "v2":
-        our_amaranth_openlane_config = test_basic_open_lane_configuration_v2
+        if openlane_configuration is None:
+            openlane_configuration = test_basic_open_lane_configuration_v2
         try:
             run_openlane_flow(
-                configuration=our_amaranth_openlane_config,
+                configuration=openlane_configuration,
                 design_directory=design_directory,
                 **kwargs,
             )

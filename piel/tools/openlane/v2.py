@@ -107,6 +107,7 @@ def generate_flow_setup(
                 Netgen.LVS,
             ]
 
+        print(configuration)
         flow = DigitalCombinatorialFlow(
             config=configuration,
             design_dir=str(design_directory.resolve()),
@@ -145,6 +146,7 @@ def run_openlane_flow(
     design_directory = return_path(design_directory)
 
     try:
+        print(configuration)
         flow = generate_flow_setup(
             configuration=configuration,
             design_directory=design_directory,

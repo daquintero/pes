@@ -1,5 +1,10 @@
 # # Digital Design & Simulation Flow
 
+# <div style="padding: 10px; border-radius: 5px;">
+# <strong>⚠️ Warning:</strong> This example requires the <code>piel-nix</code> tools environment.
+# <a href="https://piel.readthedocs.io/en/latest/sections/environment/index.html" target="_blank">See environment configuration documentation</a>.
+# </div>
+
 # There are many tools to perform a digital design flow. I have summarised some of the most relevant ones in the TODO LINK INTEGRATION PAGE. In `piel`, there are a few digital design flow functionalities integrated. However, because the output or interconnections have a set of accepted common measurement, it is possible to use different design flows to integrate with other tools in the flow.
 #
 # We will explore two popular ones:
@@ -349,7 +354,6 @@ piel.simple_plot_simulation_data(example_simple_simulation_data)
 
 # ## Sequential Implementation
 
-# +
 try:
     from openlane.flows import SequentialFlow
     from openlane.steps import Yosys, OpenROAD, Magic, Netgen
@@ -387,4 +391,3 @@ except ModuleNotFoundError as e:
     print(
         f"Make sure you are running this from an environment with Openlane nix installed {e}"
     )
-# -

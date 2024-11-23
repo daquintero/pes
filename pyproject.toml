@@ -114,7 +114,6 @@ dev = [
   "gdsfactory",
   "gplugins",
   "hdl21",
-  "openlane",
   "qutip",
   "sax",
   "tabulate",

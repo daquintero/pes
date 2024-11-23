@@ -42,6 +42,7 @@ test_basic_open_lane_configuration_v2 = {  # Works for small designs
     "FP_CORE_UTIL": 80,
     "RUN_HEURISTIC_DIODE_INSERTION": True,
     "RUN_MCSTA": False,  # Temporary TODO REMOVE
+    "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
 }
 
 example_open_lane_configuration = {
