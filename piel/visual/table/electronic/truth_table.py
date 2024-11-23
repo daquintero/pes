@@ -11,7 +11,7 @@ def compose_fock_state_truth_table_latex(
     # Column headers
     if headers is None:
         headers = ["$|\\psi_{IN}\\rangle$"] + [
-            f"Bit Phase {i}" for i in range(len(df.columns) - 1)
+            r"\\texttt{bits}(" + f"$\phi_{i}$)" for i in range(len(df.columns) - 1)
         ]
 
     latex_table += (

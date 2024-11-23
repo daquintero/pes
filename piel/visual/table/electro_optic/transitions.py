@@ -13,7 +13,7 @@ def compose_optical_state_transition_dataframe_latex_table(
     # Column headers
     if headers is None:
         headers = [
-            "$(\\phi_{N},...)$",
+            "$(\\phi_{0},...,\phi_{N})$",
             "$|\\psi_{IN}\\rangle$",
             "$|\\psi_{OUT}\\rangle$",
             "Target",

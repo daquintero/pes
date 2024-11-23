@@ -262,6 +262,8 @@ piel.write_file(
     file_name="chain_3_truth_table.tex",
 )
 
+print(transition_dataframe_latex)
+
 truth_table.input_ports
 
 truth_table.output_ports
@@ -599,15 +601,21 @@ component = piel.flows.layout_truth_table(
 )
 
 import sky130
+
 component = piel.flows.get_latest_digital_run_component(
     module=full_flow_demo,
 )
-component.plot()
+# component.plot()
+
+fig = component.plot_klayout()
+fig.savefig(
+    "../../_static/img/examples/07_full_flow_demo_electronic_photonic/chip_full_flow.png"
+)
 
 # ![chip_layout](../../_static/img/examples/07_full_flow_demo_electronic_photonic/chip_full_flow.png)
 
-print("Truth Table Layout")
-component.show()
+# We can extract some implementation metrics accordingly.
+
 
 # ## 4a. Driver-Amplfier Modelling
 

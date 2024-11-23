@@ -1,4 +1,7 @@
 from typing import Union
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def convert_to_pi_fraction(
@@ -40,8 +43,9 @@ def convert_to_pi_fraction(
             multiple_of_pi,
             rational=True,
             tolerance=1e-10,
-            max_denominator=max_denominator,
         )
+
+        logger.debug(rational_approx)
 
         # If the approximation is zero, return '0'
         if rational_approx == 0:
@@ -80,4 +84,7 @@ def convert_tuple_to_pi_fractions(
         >>> convert_tuple_to_pi_fractions((0.785398, 0.523599, 0))
         ('\\frac{\\pi}{4}', '\\frac{\\pi}{6}', '0')
     """
-    return tuple(convert_to_pi_fraction(value) for value in values)
+    phase_tuple = tuple(convert_to_pi_fraction(value) for value in values)
+    separator = ","
+    out = "[" + separator.join(phase_tuple) + "]"
+    return out
