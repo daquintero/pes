@@ -598,13 +598,16 @@ component = piel.flows.layout_truth_table(
     module=full_flow_demo,
 )
 
+import sky130
 component = piel.flows.get_latest_digital_run_component(
     module=full_flow_demo,
 )
 component.plot()
 
+# ![chip_layout](../../_static/img/examples/07_full_flow_demo_electronic_photonic/chip_full_flow.png)
+
 print("Truth Table Layout")
-component
+component.show()
 
 # ## 4a. Driver-Amplfier Modelling
 

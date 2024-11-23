@@ -46,7 +46,7 @@ qutip = { version = ">=4.7,<5.0", optional = true }
 sax = { version = "==0.12.2", optional = true }  # Pinned for pydantic <v2 compatibility
 tabulate = { version = "*", optional = true }
 scikit-rf = { version = ">=1.1.0,<2.0.0", optional = true }
-# sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true } # Depreciated until gdsfactory8
+ sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true } # Depreciated until gdsfactory8
 sky130-hdl21 = { version = ">=6.0.0,<7.0.0", optional = true }
 thewalrus = { version = ">=0.20.0,<0.21.0", optional = true }
 vlsirtools = { version = ">=6.0.0,<7.0.0", optional = true }
