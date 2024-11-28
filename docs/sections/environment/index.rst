@@ -16,17 +16,32 @@ Environment
 
 This is the recommended way to access the entire toolset environment. This will install all the external dependencies such as ``openlane``, ``ngspice``, ``cocotb`` and so on. It can be easily extended in a standard nix-pkgs flow. However, in order to run this flow you need to have nix installed which is feasible in Linux and MacOS. The entire ``piel`` package gets tested in this  `nix environment in the CI <https://github.com/daquintero/piel/blob/develop/.github/workflows/nix_environment_testing.yaml>`_ so it is reproducible to some level.
 
-If you have ``piel`` cloned locally, all you need to do is:
+The quickstart in an ubuntu environment is just the following script. This will install nix with the correct configuration and build the nix-flake correctly. We use this script in the CI.
+
+.. code-block::
+
+    git clone https://github.com/daquintero/piel.git
+    source scripts/install_piel_nix.sh
+
+
+If you just want to enter a nix development environment shell by default and you already have nix installed, then you just have to run:
 
 .. code-block::
 
     nix develop .
 
+This is the output set of instrructions provided by:
+
+.. code-block::
+
+    piel activate
+
+
 If you want to enter the corresponding `nix-shell` environment which is extensible with further packages, you can run the following command which will print the updated command you just need to copy paste into your terminal to activate the `nix-shell` environment.
 
 .. code-block:: bash
 
-    $ piel activate
+    $ piel activate-custom-shell
 
 It will print:
 

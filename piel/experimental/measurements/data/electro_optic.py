@@ -82,7 +82,7 @@ def fill_missing_pm_out(
 
     # Create a new PathTransmission instance with filled data
     filled_path_transmission = PathTransmission(
-        ports=path_transmission.output.connection, transmission=filled_transmission
+        connection=path_transmission.output.connection, transmission=filled_transmission
     )
 
     # Compose a new ElectroOpticDCPathTransmission instance
@@ -163,7 +163,7 @@ def extract_electro_optic_dc_path_transmission_from_csv(
 
     # Create PathTransmission instance with pm_out
     path_transmission = PathTransmission(
-        ports=port_map,
+        connection=port_map,
         transmission=pm_out_values,  # `pm_out` may contain np.nan
     )
 

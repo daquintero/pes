@@ -1,5 +1,5 @@
 from typing import Any
-from piel.types import MultiDataTimeSignal, Unit
+from piel.types import MultiTimeSignalData, Unit
 import numpy as np
 import matplotlib.pyplot as plt
 from piel.visual.plot.position import create_axes_per_figure
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def plot_multi_data_time_signal_equivalent(
-    multi_signal: MultiDataTimeSignal,
+    multi_signal: MultiTimeSignalData,
     fig: Any = None,
     axs: Any = None,
     subplots_kwargs: dict = None,
@@ -22,7 +22,7 @@ def plot_multi_data_time_signal_equivalent(
     Plots all rising edge signals on the same figure with a shared x-axis.
 
     Args:
-        multi_signal (List[DataTimeSignalData]): List of rising edge signals.
+        multi_signal (List[TimeSignalData]): List of rising edge signals.
         subplots_kwargs (dict): Keyword arguments to pass to create_axes_per_figure.
 
     Returns:

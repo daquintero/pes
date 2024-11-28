@@ -37,11 +37,18 @@ test_basic_open_lane_configuration_v2 = {  # Works for small designs
     "VERILOG_FILES": "dir::src/*.v",
     "RUN_CTS": False,
     "CLOCK_PORT": None,
-    "FP_SIZING": "absolute",
     "GRT_REPAIR_ANTENNAS": True,
-    "FP_CORE_UTIL": 80,
     "RUN_HEURISTIC_DIODE_INSERTION": True,
     "RUN_MCSTA": False,  # Temporary TODO REMOVE
+    "DIE_AREA": [0, 0, 200, 200],
+    # "FP_CORE_UTIL": 80,
+    "FP_SIZING": "absolute",
+    "PL_TARGET_DENSITY": 0.75,
+    "FP_PDN_AUTO_ADJUST": False,
+    "FP_PDN_VPITCH": 25,
+    "FP_PDN_HPITCH": 25,
+    "FP_PDN_VOFFSET": 5,
+    "FP_PDN_HOFFSET": 5,
 }
 
 example_open_lane_configuration = {

@@ -1,4 +1,5 @@
 from . import cables as cables
+from . import transmission_lines as transmission_lines
 
 from .core import (
     construct_current_dc_signal,
@@ -30,3 +31,5 @@ from .measurement.waveform_generator import (
 )
 from .measurement.vna import E8364A
 from .pcb import create_pcb
+
+tl = transmission_lines

@@ -1,12 +1,12 @@
-from piel.types import DataTimeSignalData
+from piel.types import TimeSignalData
 import numpy as np
 
 
 def remove_before_first_rising_edge(
-    waveform: DataTimeSignalData,
+    waveform: TimeSignalData,
     lower_threshold_ratio: float = 0.1,
     upper_threshold_ratio: float = 0.9,
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Removes all data points before the first rising edge in the waveform.
 
@@ -14,12 +14,12 @@ def remove_before_first_rising_edge(
     threshold to above the upper threshold.
 
     Parameters:
-        waveform (DataTimeSignalData): The input waveform data.
+        waveform (TimeSignalData): The input waveform data.
         lower_threshold_ratio (float): Lower threshold as a ratio of the amplitude range.
         upper_threshold_ratio (float): Upper threshold as a ratio of the amplitude range.
 
     Returns:
-        DataTimeSignalData: A new waveform with data points before the first rising edge removed.
+        TimeSignalData: A new waveform with data points before the first rising edge removed.
 
     Raises:
         ValueError: If no rising edge is found in the waveform.
@@ -72,8 +72,8 @@ def remove_before_first_rising_edge(
     # Optionally, reset the time so that the rising edge starts at zero
     sliced_time = sliced_time - sliced_time[0]
 
-    # Create a new DataTimeSignalData instance with the sliced data
-    trimmed_signal = DataTimeSignalData(
+    # Create a new TimeSignalData instance with the sliced data
+    trimmed_signal = TimeSignalData(
         time_s=sliced_time.tolist(),
         data=sliced_data.tolist(),
         data_name=waveform.data_name,

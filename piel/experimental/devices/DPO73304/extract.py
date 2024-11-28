@@ -12,8 +12,8 @@ from piel.types.experimental import (
     OscilloscopeMeasurementData,
 )
 from piel.types import (
-    DataTimeSignalData,
-    MultiDataTimeSignal,
+    TimeSignalData,
+    MultiTimeSignalData,
     PathTypes,
     ScalarMetric,
     ScalarMetricCollection,
@@ -109,7 +109,7 @@ def extract_waveform_to_dataframe(file: PathTypes) -> pd.DataFrame:
 
 def extract_to_data_time_signal(
     file: PathTypes,
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Extracts the waveform files from a csv file and returns it as a DataTimeSignal that can be used to analyse the signal with other methods.
 
@@ -120,12 +120,12 @@ def extract_to_data_time_signal(
 
     Returns
     -------
-    DataTimeSignalData
+    TimeSignalData
         The waveform files as a DataTimeSignal.
     """
     logger.debug(f"Extracting waveform from file: {file}")
     dataframe = extract_waveform_to_dataframe(file)
-    data_time_signal = DataTimeSignalData(
+    data_time_signal = TimeSignalData(
         time_s=dataframe.time_s.values,
         data=dataframe.voltage_V.values,
         data_name="voltage_V",
@@ -320,9 +320,9 @@ def extract_to_signal_measurement(file: PathTypes, **kwargs) -> ScalarMetricColl
 
 def combine_channel_data(
     channel_file: list[PathTypes],
-) -> MultiDataTimeSignal:
+) -> MultiTimeSignalData:
     """
-    Extracts the waveform files from a list of csv files and returns it as a MultiDataTimeSignal that can be used to analyse the signals together.
+    Extracts the waveform files from a list of csv files and returns it as a MultiTimeSignalData that can be used to analyse the signals together.
 
     Parameters
     ----------
@@ -331,8 +331,8 @@ def combine_channel_data(
 
     Returns
     -------
-    MultiDataTimeSignal
-        The waveform files as a MultiDataTimeSignal.
+    MultiTimeSignalData
+        The waveform files as a MultiTimeSignalData.
     """
     multi_channel_data_time_signals = list()
 

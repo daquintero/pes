@@ -44,20 +44,25 @@ def calculate_coaxial_cable_heat_transfer(
     heat_transfer_parameters = dict()
     total_heat_transfer_W = 0
     for material_i in provided_materials:
-        thermal_conductivity_fit_i = get_thermal_conductivity_fit(
-            temperature_range_K=temperature_range_K,
-            material=getattr(material_class, material_i),
-        )
-        # CURRENT TODO compute the thermal conductivity fit accordingly. Implement a material reference to thermal conductivtiy files mapping.
+        print(material_i)
+        if material_i is None:
+            continue
+        else:
+            thermal_conductivity_fit_i = get_thermal_conductivity_fit(
+                temperature_range_K=temperature_range_K,
+                material=getattr(material_class, material_i),
+            )
+            # CURRENT TODO compute the thermal conductivity fit accordingly. Implement a material reference to thermal conductivtiy files mapping.
 
-        heat_transfer_i = heat_transfer_1d_W(
-            thermal_conductivity_fit=thermal_conductivity_fit_i,
-            temperature_range_K=temperature_range_K,
-            cross_sectional_area_m2=geometry_class.total_cross_sectional_area_m2,
-            length_m=geometry_class.length_m,
-        )
-        heat_transfer_parameters[material_i] = heat_transfer_i
-        total_heat_transfer_W += heat_transfer_i
+            heat_transfer_i = heat_transfer_1d_W(
+                thermal_conductivity_fit=thermal_conductivity_fit_i,
+                temperature_range_K=temperature_range_K,
+                cross_sectional_area_m2=geometry_class.total_cross_sectional_area_m2,
+                length_m=geometry_class.length_m,
+            )
+            heat_transfer_parameters[material_i] = heat_transfer_i
+            total_heat_transfer_W += heat_transfer_i
+
     heat_transfer_parameters["total"] = total_heat_transfer_W
 
     return CoaxialCableHeatTransferType(

@@ -1,7 +1,7 @@
-from ..types import MultiDataTimeSignal
+from ..types import MultiTimeSignalData
 
 
-def plot_time_signals(multi_data_time_signal: MultiDataTimeSignal):
+def plot_time_signals(multi_data_time_signal: MultiTimeSignalData):
     """
     TODO signals
     """

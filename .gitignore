@@ -200,5 +200,9 @@ RUN_*
 
 *.sif
 .idea/
+
 docs/autoapi/
 result
+docs/examples/02a_large_scale_digital_layout/sequential/*
+docs/examples/02a_large_scale_digital_layout/parallel/*
+*/runs/*

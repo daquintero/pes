@@ -1,5 +1,10 @@
 # # Further Analogue-Enhanced Cosimulation including `SPICE`
 
+# <div style="padding: 10px; border-radius: 5px;">
+# <strong>⚠️ Warning:</strong> This example requires the <code>piel-nix</code> tools environment.
+# <a href="https://piel.readthedocs.io/en/latest/sections/environment/index.html" target="_blank">See environment configuration documentation</a>.
+# </div>
+
 # This example demonstrates the modelling of multi-physical component interconnection and system design.
 
 from piel.models.physical.photonic import (

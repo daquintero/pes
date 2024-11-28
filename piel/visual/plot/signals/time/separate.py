@@ -1,5 +1,5 @@
-from typing import Any
-from piel.types import MultiDataTimeSignal, Unit
+from typing import Any, Tuple
+from piel.types import MultiTimeSignalData, Unit
 import numpy as np
 from piel.visual.plot.position import create_axes_per_figure
 from piel.visual.plot.core import save
@@ -9,24 +9,32 @@ logger = logging.getLogger(__name__)
 
 
 def plot_multi_data_time_signal_different(
-    multi_signal: MultiDataTimeSignal,
+    multi_signal: MultiTimeSignalData,
     fig: Any = None,
     axs: Any = None,
     subplots_kwargs: dict = None,
     xlabel: str | Unit | list[Unit] = None,
     ylabel: str | Unit | list[Unit] | list = None,
     title: str | Unit | list = None,
+    time_range_s: Tuple[float, float] = None,  # Add time_range parameter
+    labels: list[str] = None,
     **kwargs,
 ):
     """
-    Plots all rising edge signals on the same figure, but with a shared x-axis, but multiple y axes.
+    Plots all rising edge signals on the same figure, but with a shared x-axis and multiple y-axes.
 
     Args:
-        multi_signal (List[DataTimeSignalData]): List of rising edge signals.
+        multi_signal (MultiTimeSignalData): List of rising edge signals.
+        fig (Any): Figure object.
+        axs (Any): Axes object.
         subplots_kwargs (dict): Keyword arguments to pass to create_axes_per_figure.
+        xlabel (str | Unit | list[Unit]): Label for x-axis.
+        ylabel (str | Unit | list[Unit] | list): Label for y-axis.
+        title (str | Unit | list): Title for the plot.
+        time_range_s (Tuple[float, float]): Tuple indicating the (start, end) time for the x-axis range.
 
     Returns:
-        None
+        fig (Any), axs (Any): Figure and Axes objects.
     """
     signal_amount = len(multi_signal)
 
@@ -60,7 +68,7 @@ def plot_multi_data_time_signal_different(
         )
         ylabel = ylabel.label
     elif isinstance(ylabel, list):
-        # THis should be a list of units
+        # This should be a list of units
         i = 0
         for unit_i in ylabel:
             if isinstance(unit_i, Unit):
@@ -78,24 +86,37 @@ def plot_multi_data_time_signal_different(
 
     if title is None:
         pass
-    elif title is str:
+    elif isinstance(title, str):
         fig.suptitle(title)
+
+    if time_range_s is None:
+        # Assumes at least one signal
+        time_range_s = [min(multi_signal[0].time_s), max(multi_signal[0].time_s)]
+        # TODO improve this
+
+    time_range_s[0] = time_range_s[0] / x_correction
+    time_range_s[1] = time_range_s[1] / x_correction
 
     i = 0
     for signal in multi_signal:
         if (len(signal.time_s) == 0) or (signal.time_s is None):
             raise ValueError(f"Signal '{signal.data_name}' has an empty time_s array.")
 
+        if labels is None:
+            label_i = signal.data_name
+        else:
+            label_i = labels[i]
+
         time = np.array(signal.time_s) / x_correction
         data = np.array(signal.data) / y_correction[i]
 
-        axs[i].plot(
-            time,
-            data,
-            label=signal.data_name,
-            # color=plt.rcParams["axes.prop_cycle"].by_key()["color"][i],
-        )
-        # print(i)
+        # Apply time range filtering
+        if time_range_s:
+            mask = (time >= time_range_s[0]) & (time <= time_range_s[1])
+            time = time[mask]
+            data = data[mask] / y_correction[i]
+
+        axs[i].plot(time, data, label=label_i)
 
         axs[i].set_ylabel(ylabel[i])
 

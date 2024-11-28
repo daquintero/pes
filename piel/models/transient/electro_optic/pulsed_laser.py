@@ -1,5 +1,5 @@
 import numpy as np
-from piel.types import PulsedLaser, DataTimeSignalData, ns, W
+from piel.types import PulsedLaser, TimeSignalData, ns, W
 
 
 def generate_laser_time_data_pulses(
@@ -7,7 +7,7 @@ def generate_laser_time_data_pulses(
     time_frame_s: float,
     point_amount: int,
     data_name: str = "optical_pulse_power",
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Converts PulsedLaser metrics into a time-domain signal representation.
 
@@ -18,7 +18,7 @@ def generate_laser_time_data_pulses(
     - data_name (str): Name/description of the data signal.
 
     Returns:
-    - DataTimeSignalData: The time-domain signal data.
+    - TimeSignalData: The time-domain signal data.
     """
     if not pulsed_laser.metrics:
         raise ValueError(
@@ -75,8 +75,8 @@ def generate_laser_time_data_pulses(
         if start < end:
             data_array[start:end] = pulse_amplitude_W
 
-    # Create DataTimeSignalData object
-    signal_data = DataTimeSignalData(
+    # Create TimeSignalData object
+    signal_data = TimeSignalData(
         time_s=time_array_ns.tolist(),  # Time in nanoseconds
         data=data_array.tolist(),
         data_name=data_name,

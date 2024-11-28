@@ -1,10 +1,6 @@
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
 [tool.poetry]
 name = "piel"
-version = "0.0.56"
+version = "0.1.0"
 description = "Photonic Integrated Electronics: microservices to codesign photonics, electronics, communications, quantum, and more."
 authors = ["Dario Quintero <darioaquintero@gmail.com>"]
 license = "MIT"
@@ -43,14 +39,14 @@ xarray = ">=2024.1.0,<2024.10.0"
 amaranth = { version = ">=0.4.0,<0.5.0", optional = true }
 amaranth-yosys = { version = ">=0.40.0.0.post94,<0.41.0", optional = true }
 cocotb = { version = "==1.9.1", optional = true }
-gdsfactory = { git = "https://github.com/daquintero/gdsfactory7.git", branch = "dario/fix_recursive_e_netlist", optional = true }
+gdsfactory = { git = "https://github.com/gdsfactory/gdsfactory7.git", optional = true }
 gplugins = { version = ">=0.14.0,<0.15.0", extras = ["schematic"], optional = true }
 hdl21 = { version = ">=6.0.0,<7.0.0", optional = true }
 qutip = { version = ">=4.7,<5.0", optional = true }
 sax = { version = "==0.12.2", optional = true }  # Pinned for pydantic <v2 compatibility
 tabulate = { version = "*", optional = true }
 scikit-rf = { version = ">=1.1.0,<2.0.0", optional = true }
-sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true }
+ sky130 = { git = "https://github.com/daquintero/skywater130.git", branch = "dario/patch_for_rladder_gplugins", optional = true } # Depreciated until gdsfactory8
 sky130-hdl21 = { version = ">=6.0.0,<7.0.0", optional = true }
 thewalrus = { version = ">=0.20.0,<0.21.0", optional = true }
 vlsirtools = { version = ">=6.0.0,<7.0.0", optional = true }
@@ -118,7 +114,6 @@ dev = [
   "gdsfactory",
   "gplugins",
   "hdl21",
-  "openlane",
   "qutip",
   "sax",
   "tabulate",
@@ -179,6 +174,10 @@ name = "jaxsource"
 priority = "supplemental"
 url = "https://storage.googleapis.com/jax-releases/jax_releases.html"
 
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 # Tool configurations
 
 [tool.flake8]
@@ -188,9 +187,31 @@ exclude = "docs"
 addopts = "-rav"
 minversion = "6.0"
 testpaths = ["tests/"]
+markers = [
+    "full_env: Tests to run within a full environment"
+]
 
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
 "piel/units/string.py" = ["F403", "F405"]
 "**/{tests,docs,tools}/*" = ["E402", "F401", "F841"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["piel/"]
+omit = [
+#    "docs/examples/*",
+#    "tests/*",
+    "/nix/*"
+]
+
+[tool.coverage.report]
+sort = "-cover"
+show_missing = true
+omit = [
+    "docs/examples/*",
+    "tests/*",
+    "/nix/*"
+]

@@ -22,6 +22,7 @@
 # - [2] Silicon Photonics Design: From Devices to Systems by Lukas Chrostowski and Michael Hochberg
 
 # +
+import piel
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
@@ -29,6 +30,7 @@ import piel.models.frequency.photonic
 import numpy as np
 import jax.numpy as jnp
 import pandas as pd
+import os
 # -
 
 # ## Coupler Modelling
@@ -36,7 +38,7 @@ import pandas as pd
 # A coupler represents a multi-port connection of optical connection towards another subset of optical connection. They can have many physical implementations, such as directional couplers, multi-mode interference couplers (MMIs), permittivity grid couplers such as those inverse designed, etc.
 #
 # ### 1x2 Coupler
-# A 1x2 coupler, also known as a Y-branch, routes two optical connection into one, or viceversa as this is a reversible linear component. Note that we represent the electric fields as $E_{f}$ as phasors equivalent to $E=Ae^{j\omega + \phi}$. The transfer-matrix model for this device without considering propagation loss is:
+# A 1x2 coupler, also known as a Y-branch, routes two optical connection into one, or vice-versa as this is a reversible linear component. Note that we represent the electric fields as $E_{f}$ as phasors equivalent to $E=Ae^{j\omega + \phi}$. The transfer-matrix model for this device without considering propagation loss is:
 #
 # \begin{equation}
 # \begin{bmatrix}
@@ -117,7 +119,7 @@ piel.models.frequency.photonic.mmi1x2(splitting_ratio=0.4)
 # \end{bmatrix}
 # \end{equation}
 #
-# Note that the imaginary $j$ term causes a $\pi / 2$ phase shift between teh direct and cross coupled inputs
+# Note that the imaginary $j$ term causes a $\pi / 2$ phase shift between the direct and cross coupled inputs
 
 from gdsfactory.components import mmi2x2
 
@@ -350,7 +352,7 @@ mzi2x2_2x2().plot()
 
 # ## Phase-Shifter Models
 
-# A phase-shifter can be considered as an "active propagation path" which adds or substracts relative phase in reference to another optical path. If we assume we have two waveguides in parallel in an integrated platform, in order to construct the interferometer, we need to consider the addition of phase $\phi$ onto each of these paths. A more complete model considers the loss $\alpha$ ($\frac{N_p}{m}$) per path length $L$. This can be part of a waveguide model:
+# A phase-shifter can be considered as an "active propagation path" which adds or subtracts relative phase in reference to another optical path. If we assume we have two waveguides in parallel in an integrated platform, in order to construct the interferometer, we need to consider the addition of phase $\phi$ onto each of these paths. A more complete model considers the loss $\alpha$ ($\frac{N_p}{m}$) per path length $L$. This can be part of a waveguide model:
 #
 # ### More Ideal Model
 #
@@ -650,11 +652,11 @@ fig.savefig(
 # * $m_{ch}^*$ Effective mass of holes
 # * $[Y]$ Vector of the Y branches (3dB beamsplitters)
 # * $w$ angular frequency in which the refractive index is calculated
-# * $w'$ integration variable angular frequency for which teh absorption spectrum files is to be integrated
+# * $w'$ integration variable angular frequency for which the absorption spectrum files is to be integrated
 # * $\mu_e$ electron mobility
 # * $\mu_h$ hole mobility
 
-# Propagation in ther ams of the interferometer is modeled by modifying the amplitude and phase of the phasors:
+# Propagation in the of the interferometer is modeled by modifying the amplitude and phase of the phasors:
 #
 # \begin{equation}
 # \begin{bmatrix}
@@ -724,8 +726,8 @@ L = np.linspace(1e-4, 3e-3)
 pi_delta_n_eff = pi_delta_neff_L / L
 two_pi_delta_n_eff = two_pi_delta_neff_L / L
 fig, ax = plt.subplots()
-ax.plot(L, pi_delta_n_eff, "b-", label=r"$\pi$")
-ax.plot(L, two_pi_delta_n_eff, "g--", label=r"$2\pi$")
+ax.plot(L, pi_delta_n_eff, "-", label=r"$\pi$")
+ax.plot(L, two_pi_delta_n_eff, "--", label=r"$2\pi$")
 ax.legend()
 ax.set_xlabel(r"$L$ (mm)", size=14)
 ax.set_xticklabels(plt.xticks()[0] * 1e3)
@@ -733,7 +735,7 @@ ax.set_ylabel(r"$\Delta n_{eff}$", size=14)
 ax.set_title(
     "2um Electro-optic refractive index change per effective modulation length"
 )
-fig.savefig("img/refractive_index_change_modulation_length.png")
+fig.savefig(os.path.join(os.getenv("TAP"), "refractive_index_change_phase_length.png"))
 
 # +
 frey_dn_dT = np.array(
@@ -802,14 +804,14 @@ dn_dt_dataframe = pd.DataFrame(
 dn_dt_dataframe.to_csv()
 
 # +
-fig, ax1 = plt.subplots(figsize=(6, 6))
+fig, ax1 = plt.subplots(figsize=(12, 4))
 ax1.set_xlabel(r"Temperature ($K$)", fontsize=14)
 ax1.set_ylabel(r"Silicon Thermo-optic Coefficient $\frac{dn}{dT}$", fontsize=14)
 ax1.set_yscale("log")
 ax1.plot(
     dn_dt_dataframe["temperature"][3:],
     dn_dt_dataframe.dn_dT[3:],
-    "go",
+    "o",
     label=r"$\frac{dn}{dT}$",
 )
 
@@ -819,14 +821,14 @@ ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 ax2.set_ylabel(
     "Silicon Absolute Refractive Index", fontsize=14
 )  # we already handled the x-label with ax1
-ax2.plot(dn_dt_dataframe["temperature"][3:], dn_dt_dataframe.n[3:], "g--", label=r"$n$")
+ax2.plot(dn_dt_dataframe["temperature"][3:], dn_dt_dataframe.n[3:], "--", label=r"$n$")
 # ax2.tick_params(axis='y', labelcolor=color)
 ax1.legend(loc="upper left", fontsize=14)
 ax2.legend(loc="lower right", fontsize=14)
 
 ax1.set_title(r"Cryogenic Thermo-optic Parameters", fontweight="bold", fontsize=16)
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
-fig.savefig("thermo_optic_temperature_dependence.png")
+fig.savefig(os.path.join(os.getenv("TAP"), "thermo_optic_temperature_dependence.png"))
 # -
 
 # We note that the thermo-optic coefficient is variable of temperature
@@ -916,13 +918,13 @@ fig.savefig("thermo_optic_temperature_dependence.png")
 # \Delta \alpha (w', E) = \alpha(w', E) - \alpha (w', 0)
 # \end{equation}
 #
-# In teh case of change in absorption due to change in carrier concentration $\Delta N$:
+# In the case of change in absorption due to change in carrier concentration $\Delta N$:
 #
 # \begin{equation}
 # \Delta \alpha(w', \Delta N) = \alpha (w', \Delta N) - \alpha (w', 0)
 # \end{equation}
 
-# Perturbations in complex refractive index $\bar{n}$ inducted by teh application of electric field (electro-optic effects) or modualting the free carrier concentration.
+# Perturbations in complex refractive index $\bar{n}$ inducted by the application of electric field (electro-optic effects) or modualting the free carrier concentration.
 #
 # Several electro-optic effects:
 # * Pockels (refractive index change directly proportional to applied electric field only present in non-centrosymmetric crystals, unstrained silicon is centro-symmetric so does not have Pockel's unless deliberately strained)
@@ -1166,13 +1168,13 @@ ax1.set_yscale("log")
 ax1.plot(
     delta_N_h_standalone_variation_Ne_1e17_dataframe.delta_N_h,
     delta_N_h_standalone_variation_Ne_1e17_dataframe.delta_alpha,
-    "b-",
+    "C0-",
     label=r"$\Delta \alpha(\Delta N_h$)",
 )
 ax1.plot(
     delta_N_e_standalone_variation_Nh_1e17_dataframe.delta_N_e,
     delta_N_e_standalone_variation_Nh_1e17_dataframe.delta_alpha,
-    "m-.",
+    "C1-.",
     label=r"$\Delta \alpha(\Delta N_e$)",
 )
 ax1.legend(loc="upper left", fontsize=14)
@@ -1185,13 +1187,13 @@ ax2.set_ylabel(r"$\Delta n$", fontsize=14)
 ax2.plot(
     delta_N_h_standalone_variation_Ne_1e17_dataframe.delta_N_h,
     delta_N_h_standalone_variation_Ne_1e17_dataframe.delta_n,
-    "b--",
+    "C0--",
     label=r"$\Delta n(\Delta N_h$)",
 )
 ax2.plot(
     delta_N_e_standalone_variation_Nh_1e17_dataframe.delta_N_e,
     delta_N_e_standalone_variation_Nh_1e17_dataframe.delta_n,
-    "m:",
+    "C1:",
     label=r"$\Delta n(\Delta N_e$)",
 )
 ax2.set_ylabel(r"Refractive Index $\Delta n$", fontsize=14)
@@ -1207,4 +1209,8 @@ ax1.set_title(
     fontsize=16,
 )
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
-fig.savefig("nedeljkovic_dopant_concentration_variations.png")
+# fig.savefig("nedeljkovic_dopant_concentration_variations.png")
+fig.savefig(
+    os.path.join(os.getenv("TAP"), "nedeljkovic_dopant_concentration_variations.png")
+)
+# -

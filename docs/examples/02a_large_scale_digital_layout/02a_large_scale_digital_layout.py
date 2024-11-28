@@ -83,6 +83,22 @@ truth_table.dataframe
 # | 15 |    1111 |     1010 |
 
 
+# ### Verify Our Environment Configuration
+
+# This should run successfully for the remaining example
+
+layout_truth_table_through_openlane
+
+layout_truth_table_through_openlane(
+    truth_table=truth_table,
+    parent_directory="sequential",
+    target_directory_name="sequential_test",
+)
+
+
+# ### Configure Optimised Runs
+
+
 def sequential_implementations(amount_of_implementations: int):
     implementations = list()
 
@@ -121,6 +137,19 @@ def parallel_implementations(amount_of_implementations: int):
 # Let's time this:
 
 # +
+start_sequential = time.time()
+sequential_implementations(amount_of_implementations=4)
+end_sequential = time.time()
+
+print("Sequential")
+print(end_sequential - start_sequential)
+# -
+# ```
+# Sequential
+# 106.13592076301575
+# ```
+
+# +
 start_parallel = time.time()
 parallel_implementations(amount_of_implementations=4)
 end_parallel = time.time()
@@ -132,17 +161,4 @@ print(end_parallel - start_parallel)
 # ```python
 # Parallel
 # 42.47045159339905
-# ```
-
-# +
-start_sequential = time.time()
-sequential_implementations(amount_of_implementations=4)
-end_sequential = time.time()
-
-print("Sequential")
-print(end_sequential - start_sequential)
-# -
-# ```
-# Sequential
-# 106.13592076301575
 # ```

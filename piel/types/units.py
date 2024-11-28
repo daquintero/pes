@@ -41,7 +41,7 @@ class Unit(SymbolicValue):
 
 
 A = Unit(name="ampere", datum="ampere", base=1, label=r"Current $A$", shorthand="A")
-dB = Unit(name="decibel", datum="dB", base=1, label=r"Ratio $dB$", shorthand="dB")
+dB = Unit(name="decibel", datum="dB", base=1, label=r"Magnitude $dB$", shorthand="dB")
 dBm = Unit(
     name="decibel_milliwatt", datum="dBm", base=1, label=r"Power $dBm$", shorthand="dBm"
 )
@@ -50,6 +50,7 @@ GHz = Unit(
     name="gigahertz", datum="hertz", base=1e9, label=r"Frequency $GHz$", shorthand="GHz"
 )
 Hz = Unit(name="hertz", datum="hertz", base=1, label=r"Frequency $Hz$", shorthand="Hz")
+H = Unit(name="Henry", datum="henry", base=1, label=r"Henry $H$", shorthand="H")
 nm = Unit(
     name="nanometer", datum="meter", base=1e-9, label=r"Length $nm$", shorthand="nm"
 )

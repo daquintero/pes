@@ -28,7 +28,8 @@
 
 
 import gdsfactory as gf
-import gplugins.tidy3d as gt
+
+# import gplugins.tidy3d as gt
 import tidy3d as td
 
 # ## Getting Started with Mode Analysis
@@ -46,10 +47,10 @@ import tidy3d as td
 # We will use the `gdsfactory` layer default PDK layer stack. You might want to examine it because it has the thicknesses and positions of our layer. You can read more about it [in the `gdsfactory` documentation](https://gdsfactory.github.io/gdsfactory/notebooks/03_layer_stack.html).
 
 gf.config.rich_output()
-PDK = gf.generic_tech.get_generic_pdk()
-PDK.activate()
-LAYER_STACK = PDK.layer_stack
-LAYER_STACK
+# PDK = gf.generic_tech.get_generic_pdk()
+# PDK.activate()
+# LAYER_STACK = PDK.layer_stack
+# LAYER_STACK
 
 # We will also set the resolution of our mesh for the components we care about for the `femwell` PDE solver:
 
@@ -65,9 +66,16 @@ resolutions = {
 # We want to model our heated MZI2x2 phase shifter.
 
 our_heated_mzi2x2 = gf.components.mzi2x2_2x2_phase_shifter()
-our_heated_mzi2x2.plot_widget()
+our_heated_mzi2x2.plot()
 
 # ![mzi2x2_2x2_phase_shifter](../_static/img/examples/03a_sax_active_cosimulation/mzi2x2_phase_shifter.PNG)
+
+from gdsfactory.export import to_svg
+
+to_svg(
+    our_heated_mzi2x2,
+    filename="../_static/img/examples/03a_sax_active_cosimulation/mzi2x2_phase_shifter.svg",
+)
 
 # However, we know from the instances list that the heater element in our MZI2x2 is a `straight_heater_simple`
 

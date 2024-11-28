@@ -1,5 +1,35 @@
 # # `piel` Electronic-Photonic Co-Design - Full Flow Demo
 
+# <div style="padding: 10px; border-radius: 5px;">
+# <strong>⚠️ Warning:</strong> This example requires the <code>piel-nix</code> tools environment.
+# <a href="https://piel.readthedocs.io/en/latest/sections/environment/index.html" target="_blank">See environment configuration documentation</a>.
+# </div>
+
+# + active=""
+# !git clone https://github.com/daquintero/piel.git
+# !cd piel/
+# !source scripts/install_piel_nix.sh
+# !nix develop .
+# -
+
+# ! which openlane
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
+# ! which ngspice
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
+# ! which gtkwave
+
+# ```
+# /nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/bin/openlane
+# ```
+
 # The goal of this notebook is to demonstrate some of the codesign functionality in a photonics-first electronically-specified system.
 #
 #
@@ -16,6 +46,7 @@
 # We begin by importing a parametric circuit from `gdsfactory`:
 import hdl21 as h
 import numpy as np
+import jax.numpy as jnp
 import pandas as pd
 from gdsfactory.generic_tech import get_generic_pdk
 import piel
@@ -24,6 +55,7 @@ from piel.models.physical.photonic import (
     component_lattice_generic,
     straight_heater_metal_simple,
 )
+import os
 
 # First, let's set up the filesystem in the directory in which all our files will be generated and stored. This is really an extension of a full mixed-signal design compatible with the tools supported by `piel`.
 
@@ -92,6 +124,8 @@ def create_switch_fabric():
 chain_3_mode_lattice_circuit = create_switch_fabric()
 chain_3_mode_lattice_circuit
 
+chain_3_mode_lattice_circuit
+
 # ## 2. Extracting our optical-to-electronic control logic truth table
 
 
@@ -117,7 +151,26 @@ chain_fock_state_transitions = piel.flows.get_state_phase_transitions(
     target_mode_index=2,
 )
 
+chain_fock_state_transitions.transmission_data[0]
+
 chain_fock_state_transitions.transition_dataframe
+
+transition_dataframe_latex = piel.visual.table.electro_optic.compose_optical_state_transition_dataframe_latex_table(
+    chain_fock_state_transitions.transition_dataframe
+)
+target_output_dataframe_latex = piel.visual.table.electro_optic.compose_optical_state_transition_dataframe_latex_table(
+    chain_fock_state_transitions.target_output_dataframe
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=transition_dataframe_latex,
+    file_name="chain_3_transition_dataframe.tex",
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=target_output_dataframe_latex,
+    file_name="chain_3_target_dataframe.tex",
+)
 
 # We can plot this to show the electronic-photonic behaviour we want to see:
 
@@ -132,7 +185,7 @@ chain_fock_state_transitions.target_output_dataframe
 # Now, each of these electronic phases applied correspond to a given digital value that we want to implement on the electronic logic.
 
 basic_ideal_phase_map = piel.models.logic.electro_optic.linear_bit_phase_map(
-    bits_amount=5, final_phase_rad=np.pi, initial_phase_rad=0
+    bits_amount=5, final_phase_rad=jnp.pi, initial_phase_rad=0
 )
 basic_ideal_phase_map.dataframe
 
@@ -197,6 +250,19 @@ truth_table.dataframe
 # |  0 |                    100 |         00000 |         00000 |
 # |  1 |                    001 |         00000 |         11111 |
 # |  2 |                    010 |         11111 |         00000 |
+
+transition_dataframe_latex = (
+    piel.visual.table.electronic.compose_fock_state_truth_table_latex(
+        truth_table.dataframe
+    )
+)
+piel.write_file(
+    directory_path=os.getenv("TAT"),
+    file_text=transition_dataframe_latex,
+    file_name="chain_3_truth_table.tex",
+)
+
+print(transition_dataframe_latex)
 
 truth_table.input_ports
 
@@ -315,7 +381,7 @@ cocotb_simulation_data
 
 # Now, we could technically also use this simulation to model our optical signal transmission too.
 
-# +
+# + active=""
 # # Current work in progress move this out of here.
 # simple_ideal_o4_mzi_2x2_plots = piel.experimental.plot_simple_multi_row(
 #     files=mzi2x2_simple_simulation_data_lines,
@@ -331,13 +397,13 @@ cocotb_simulation_data
 #     "../_static/img/examples/03a_sax_active_cosimulation/simple_ideal_o4_mzi_2x2_plots.PNG"
 # )
 
-# +
+# + active=""
 # # Current work in progress move this out of here.
 # import pandas as pd
 # import sax
 # from typing import Callable
-
-
+#
+#
 # def compute_simulation_unitaries(
 #     simulation_data: pd.DataFrame,
 #     phase_mapping_function: Callable,
@@ -348,7 +414,7 @@ cocotb_simulation_data
 # ) -> List[Any]:
 #     """
 #     Processes simulation files to generate a list of unitaries using a digital-to-phase model and a custom library.
-
+#
 #     Args:
 #         simulation_data (pd.DataFrame): DataFrame containing simulation files.
 #         phase_mapping_function (Callable): Function to map files series to phase array.
@@ -359,7 +425,7 @@ cocotb_simulation_data
 #         library_defaults (Dict[str, Any]): Default parameters for the custom model library.
 #         s_parameters_function (Callable): Function to convert model output to S-parameters matrix.
 #         input_ports_order (Tuple[str, str]): Order of input connection for the S-parameters function.
-
+#
 #     Returns:
 #         List[Any]: List of unitaries corresponding to the phase array.
 #     """
@@ -367,46 +433,46 @@ cocotb_simulation_data
 #     data_series = simulation_data[data_series_key]
 #     phase_array = phase_mapping_function(data_series=data_series, phase_map=phase_map)
 #     simulation_data["phase"] = phase_array
-
+#
 #     # Create the circuit model using the netlist and custom library
 #     circuit_model, _ = sax.circuit(netlist=netlist, measurement=custom_library)
-
+#
 #     # Generate unitaries for each phase in the phase array
 #     unitaries = []
 #     for phase in phase_array:
 #         # Compute the unitary for the current phase
 #         unitary = s_parameters_function(circuit_model(sxt={"active_phase_rad": phase}))
 #         unitaries.append(unitary)
-
+#
 #     return unitaries
-
-
+#
+#
 # # def compute_simulation_unitaries():
 # # Inputs
 # # digital-to-phase model
 # # simulation files file
 # # sax-circuit-model library
 # # output returns list of unitaries accordingly
-
+#
 # # basic_ideal_phase_array = (
 # #     piel.measurement.logic.electro_optic.return_phase_array_from_data_series(
 # #         data_series=example_simple_simulation_data.x, phase_map=basic_ideal_phase_map
 # #     )
 # # )
-
+#
 # # example_simple_simulation_data["phase"] = basic_ideal_phase_array
 # # example_simple_simulation_data
-
+#
 # # our_custom_library = piel.measurement.frequency.compose_custom_model_library_from_defaults(
 # #     {"straight_heater_metal_undercut": straight_heater_metal_simple}
 # # )
 # # our_custom_library
-
+#
 # # mzi2x2_model, mzi2x2_model_info = sax.circuit(
 # #     netlist=mzi2x2_2x2_phase_shifter_netlist, measurement=our_custom_library
 # # )
 # # piel.tools.sax.sax_to_s_parameters_standard_matrix(mzi2x2_model(), input_ports_order=("o2", "o1"))
-
+#
 # # mzi2x2_active_unitary_array = list()
 # # for phase_i in example_simple_simulation_data.phase:
 # #     mzi2x2_active_unitary_i = piel.tools.sax.sax_to_s_parameters_standard_matrix(
@@ -420,32 +486,32 @@ cocotb_simulation_data
 # #     mzi2x2_active_unitary_array.append(mzi2x2_active_unitary_i)
 
 
-# +
+# + active=""
 # Inputs
 # digital-to-phase model
 # simulation files file
 # sax-circuit-model library
 # output returns list of unitaries accordingly
-
+#
 # basic_ideal_phase_array = (
 #     piel.measurement.logic.electro_optic.return_phase_array_from_data_series(
 #         data_series=example_simple_simulation_data.x, phase_map=basic_ideal_phase_map
 #     )
 # )
-
+#
 # example_simple_simulation_data["phase"] = basic_ideal_phase_array
 # example_simple_simulation_data
-
+#
 # our_custom_library = piel.measurement.frequency.compose_custom_model_library_from_defaults(
 #     {"straight_heater_metal_undercut": straight_heater_metal_simple}
 # )
 # our_custom_library
-
+#
 # mzi2x2_model, mzi2x2_model_info = sax.circuit(
 #     netlist=mzi2x2_2x2_phase_shifter_netlist, measurement=our_custom_library
 # )
 # piel.tools.sax.sax_to_s_parameters_standard_matrix(mzi2x2_model(), input_ports_order=("o2", "o1"))
-
+#
 # mzi2x2_active_unitary_array = list()
 # for phase_i in example_simple_simulation_data.phase:
 #     mzi2x2_active_unitary_i = piel.tools.sax.sax_to_s_parameters_standard_matrix(
@@ -456,19 +522,19 @@ cocotb_simulation_data
 #         ),
 #     )
 #     mzi2x2_active_unitary_array.append(mzi2x2_active_unitary_i)
-
+#
 # second function up to here
-
+#
 # third function starts here.
-
+#
 # optical_port_input = np.array([1, 0])
 # optical_port_input
-
+#
 # example_optical_power_output = np.dot(
 #     mzi2x2_simple_simulation_data.unitary.iloc[0][0], optical_port_input
 # )
 # example_optical_power_output
-
+#
 # output_amplitude_array_0 = np.array([])
 # output_amplitude_array_1 = np.array([])
 # for unitary_i in mzi2x2_simple_simulation_data.unitary:
@@ -480,17 +546,17 @@ cocotb_simulation_data
 #         output_amplitude_array_1, output_amplitude_i[1]
 #     )
 # output_amplitude_array_0
-
+#
 # mzi2x2_simple_simulation_data["output_amplitude_array_0"] = output_amplitude_array_0
 # mzi2x2_simple_simulation_data["output_amplitude_array_1"] = output_amplitude_array_1
 # mzi2x2_simple_simulation_data
-
+#
 # mzi2x2_simple_simulation_data_lines = piel.experimental.points_to_lines_fixed_transient(
 #     files=mzi2x2_simple_simulation_data,
 #     time_index_name="t",
 #     fixed_transient_time=1,
 # )
-
+#
 # simple_ideal_o3_mzi_2x2_plots = piel.experimental.plot_simple_multi_row(
 #     files=mzi2x2_simple_simulation_data_lines,
 #     x_axis_column_name="t",
@@ -508,20 +574,48 @@ cocotb_simulation_data
 
 # ## 3b. Digital Chip Implementation
 
-component = piel.flows.get_latest_digital_run_component(
-    module=full_flow_demo,
-)
-component.plot()
+# Note that in order to run this you will need to have a PDK installed locally. This is not provided intentionally within the `piel-nix` environment. You can simply run the following command within the `piel-nix` environment:
+#
+# ```
+# openlane --volare-pdk
+# ```
+
+# +
+# # !openlane --volare-pdk
+# -
+
+# Now you can verify you have the right environment configuration by running the smoke test:
+
+# +
+# # !openlane --smoke-test
+# -
+
+# You should see:
+# ```
+# [09:07:02] INFO     Smoke test passed.                           ]8;id=893291;file:///nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/lib/python3.11/site-packages/openlane/__main__.py\__main__.py]8;;\:]8;id=568740;file:///nix/store/9jb8wsk32ny2yy5ghcaq3y7mbmmavi2c-python3.11-openlane/lib/python3.11/site-packages/openlane/__main__.py#267\267]8;;\
+# ```
 
 component = piel.flows.layout_truth_table(
     truth_table=truth_table,
     module=full_flow_demo,
 )
 
-print("Truth Table Layout")
-component
+import sky130
 
-# ### 4a.
+component = piel.flows.get_latest_digital_run_component(
+    module=full_flow_demo,
+)
+# component.plot()
+
+fig = component.plot_klayout()
+fig.savefig(
+    "../../_static/img/examples/07_full_flow_demo_electronic_photonic/chip_full_flow.png"
+)
+
+# ![chip_layout](../../_static/img/examples/07_full_flow_demo_electronic_photonic/chip_full_flow.png)
+
+# We can extract some implementation metrics accordingly.
+
 
 # ## 4a. Driver-Amplfier Modelling
 

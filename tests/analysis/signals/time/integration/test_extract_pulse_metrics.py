@@ -6,7 +6,7 @@ from typing import List, Optional
 
 # Import your custom Pydantic models and functions
 from piel.types import (
-    DataTimeSignalData,
+    TimeSignalData,
     ScalarMetricCollection,
     PulsedLaserMetrics,
     ScalarMetric,
@@ -26,7 +26,7 @@ from piel.analysis.signals.time import (  # Ensure correct import path
 @pytest.fixture
 def sample_full_signal():
     """
-    Fixture to create a sample DataTimeSignalData object with predefined pulses.
+    Fixture to create a sample TimeSignalData object with predefined pulses.
     """
     # Generate a time array from 0 to 10 ns with 1000 points
     time_s = np.linspace(0, 10e-9, 1000, endpoint=False)
@@ -38,7 +38,7 @@ def sample_full_signal():
     data[(time_s >= 2e-9) & (time_s < 3e-9)] = 5.0
     data[(time_s >= 7e-9) & (time_s < 8e-9)] = 3.0
 
-    full_signal = DataTimeSignalData(
+    full_signal = TimeSignalData(
         time_s=time_s.tolist(),
         data=data.tolist(),
         data_name="test_signal",
@@ -51,7 +51,7 @@ def sample_full_signal():
 @pytest.fixture
 def sample_full_signal_no_pulses():
     """
-    Fixture to create a DataTimeSignalData object with no pulses.
+    Fixture to create a TimeSignalData object with no pulses.
     Ensures noise does not exceed the detection threshold.
     """
     # Generate a time array from 0 to 10 ns with 1000 points
@@ -64,7 +64,7 @@ def sample_full_signal_no_pulses():
     )  # Reduced std to ensure noise < 1.5 W
     data = noise.tolist()
 
-    full_signal = DataTimeSignalData(
+    full_signal = TimeSignalData(
         time_s=time_s.tolist(),
         data=data,
         data_name="no_pulses_signal",
@@ -77,7 +77,7 @@ def sample_full_signal_no_pulses():
 @pytest.fixture
 def sample_full_signal_multiple_pulses():
     """
-    Fixture to create a DataTimeSignalData object with multiple pulses.
+    Fixture to create a TimeSignalData object with multiple pulses.
     """
     # Generate a time array from 0 to 20 ns with 2000 points
     time_s = np.linspace(0, 20e-9, 2000, endpoint=False)
@@ -95,7 +95,7 @@ def sample_full_signal_multiple_pulses():
     for start, end, amplitude in pulse_params:
         data[(time_s >= start) & (time_s < end)] = amplitude
 
-    full_signal = DataTimeSignalData(
+    full_signal = TimeSignalData(
         time_s=time_s.tolist(),
         data=data.tolist(),
         data_name="multiple_pulses_signal",
@@ -170,7 +170,7 @@ def test_extract_peak_to_peak_metrics_invalid_full_signal():
     """
     Test that providing an invalid full_signal raises an AttributeError.
     """
-    invalid_signal = "this is not a DataTimeSignalData object"
+    invalid_signal = "this is not a TimeSignalData object"
 
     # with pytest.raises(AttributeError):
     #     extract_peak_to_peak_metrics_after_split_pulses(

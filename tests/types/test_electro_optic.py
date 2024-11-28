@@ -1,8 +1,8 @@
 import pytest
 import pandas as pd
 from piel.types import (
-    OpticalStateTransitions,
-    # FockStatePhaseTransitionType,
+    OpticalStateTransitionCollection,
+    # FockStatePhaseTransition,
     # PhaseTransitionTypes,
 )  # Adjust the import based on your actual module structure
 
@@ -25,7 +25,7 @@ sample_transmission_data = [
 
 # Test cases for initialization and attribute verification
 def test_optical_state_transitions_initialization():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=sample_transmission_data
     )
     assert model.mode_amount == 2
@@ -34,7 +34,7 @@ def test_optical_state_transitions_initialization():
 
 
 def test_optical_state_transitions_dataframe():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=sample_transmission_data
     )
     df = model.dataframe
@@ -47,7 +47,7 @@ def test_optical_state_transitions_dataframe():
 
 
 def test_optical_state_transitions_keys_list():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=sample_transmission_data
     )
     keys = model.keys_list
@@ -61,7 +61,7 @@ def test_optical_state_transitions_keys_list():
 
 
 def test_optical_state_transitions_transition_dataframe():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=sample_transmission_data
     )
     df = model.transition_dataframe
@@ -73,7 +73,7 @@ def test_optical_state_transitions_transition_dataframe():
 
 
 def test_optical_state_transitions_target_output_dataframe():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=sample_transmission_data
     )
     df = model.target_output_dataframe
@@ -84,7 +84,7 @@ def test_optical_state_transitions_target_output_dataframe():
 
 # Test cases for edge cases and error handling
 def test_optical_state_transitions_empty_data():
-    model = OpticalStateTransitions(
+    model = OpticalStateTransitionCollection(
         mode_amount=2, target_mode_index=1, transmission_data=[]
     )
     df = model.dataframe
@@ -101,7 +101,7 @@ def test_optical_state_transitions_empty_data():
 #             # Missing output_fock_state and target_mode_output
 #         }
 #     ]
-#     model = OpticalStateTransitions(
+#     model = OpticalStateTransitionCollection(
 #         mode_amount=2,
 #         target_mode_index=1,
 #         transmission_data=incomplete_data
@@ -122,7 +122,7 @@ def test_optical_state_transitions_invalid_phase_transition_type():
         }
     ]
     with pytest.raises(ValueError):
-        OpticalStateTransitions(
+        OpticalStateTransitionCollection(
             mode_amount=2, target_mode_index=1, transmission_data=invalid_data
         )
 
@@ -130,7 +130,7 @@ def test_optical_state_transitions_invalid_phase_transition_type():
 # TODO fix this
 # def test_optical_state_transitions_invalid_mode_amount():
 #     with pytest.raises(ValueError):
-#         OpticalStateTransitions(
+#         OpticalStateTransitionCollection(
 #             mode_amount=-1,  # Invalid mode amount
 #             target_mode_index=1,
 #             transmission_data=sample_transmission_data

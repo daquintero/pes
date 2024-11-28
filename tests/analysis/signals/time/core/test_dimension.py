@@ -400,17 +400,13 @@ def test_concatenate_metrics_collection_invalid_type():
 
 def test_extract_mean_metrics_list_success():
     """
-    Test extracting mean metrics from a MultiDataTimeSignal.
+    Test extracting mean metrics from a MultiTimeSignalData.
     """
-    # Assuming MultiDataTimeSignal is a list of DataTimeSignalData
-    from piel.types import DataTimeSignalData
+    # Assuming MultiTimeSignalData is a list of TimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1"
-    )
-    signal2 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1")
+    signal2 = TimeSignalData(time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2")
 
     multi_data_time_signal = [signal1, signal2]
 
@@ -450,9 +446,9 @@ def test_extract_mean_metrics_list_empty_data():
     """
     Test that ValueError is raised when a signal has empty data array.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(time_s=[0, 1, 2], data=[], data_name="Signal1")
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[], data_name="Signal1")
     multi_data_time_signal = [signal1]
 
     with pytest.raises(ValueError, match="Signal 'Signal1' has an empty data array."):
@@ -461,16 +457,12 @@ def test_extract_mean_metrics_list_empty_data():
 
 def test_extract_peak_to_peak_metrics_list_success():
     """
-    Test extracting peak-to-peak metrics from a MultiDataTimeSignal.
+    Test extracting peak-to-peak metrics from a MultiTimeSignalData.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 15], data_name="Signal1"
-    )
-    signal2 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[40, 50, 45], data_name="Signal2"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 15], data_name="Signal1")
+    signal2 = TimeSignalData(time_s=[0, 1, 2], data=[40, 50, 45], data_name="Signal2")
 
     multi_data_time_signal = [signal1, signal2]
 
@@ -512,9 +504,9 @@ def test_extract_peak_to_peak_metrics_list_empty_data():
     """
     Test that ValueError is raised when a signal has empty data array.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(time_s=[0, 1, 2], data=[], data_name="Signal1")
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[], data_name="Signal1")
     multi_data_time_signal = [signal1]
 
     with pytest.raises(ValueError, match="Signal 'Signal1' has an empty data array."):
@@ -525,14 +517,10 @@ def test_extract_statistical_metrics_mean_success():
     """
     Test extracting statistical metrics with analysis_type 'mean'.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1"
-    )
-    signal2 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1")
+    signal2 = TimeSignalData(time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2")
 
     multi_data_time_signal = [signal1, signal2]
 
@@ -555,14 +543,10 @@ def test_extract_statistical_metrics_peak_to_peak_success():
     """
     Test extracting statistical metrics with analysis_type 'peak_to_peak'.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 15], data_name="Signal1"
-    )
-    signal2 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[40, 50, 45], data_name="Signal2"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 15], data_name="Signal1")
+    signal2 = TimeSignalData(time_s=[0, 1, 2], data=[40, 50, 45], data_name="Signal2")
 
     multi_data_time_signal = [signal1, signal2]
 
@@ -583,11 +567,9 @@ def test_extract_statistical_metrics_invalid_analysis_type():
     """
     Test that TypeError is raised when an invalid analysis_type is provided.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1")
     multi_data_time_signal = [signal1]
 
     with pytest.raises(TypeError, match="Undefined analysis type."):
@@ -600,14 +582,10 @@ def test_extract_statistical_metrics_collection_success():
     """
     Test extracting statistical metrics collection with multiple analysis types.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1"
-    )
-    signal2 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1")
+    signal2 = TimeSignalData(time_s=[0, 1, 2], data=[40, 50, 60], data_name="Signal2")
 
     multi_data_time_signal = [signal1, signal2]
 
@@ -633,11 +611,9 @@ def test_extract_statistical_metrics_collection_invalid_analysis_types():
     """
     Test that TypeError is raised when analysis_types is not a list.
     """
-    from piel.types import DataTimeSignalData
+    from piel.types import TimeSignalData
 
-    signal1 = DataTimeSignalData(
-        time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1"
-    )
+    signal1 = TimeSignalData(time_s=[0, 1, 2], data=[10, 20, 30], data_name="Signal1")
     multi_data_time_signal = [signal1]
 
     with pytest.raises(TypeError, match="analysis_types must be a list"):

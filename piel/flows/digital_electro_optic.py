@@ -1,16 +1,21 @@
 from collections import OrderedDict
 import numpy as np
 from typing import Optional, Callable
-from ..types import (
+from piel.types import (
     BitPhaseMap,
     BitsType,
     PhaseMapType,
-    OpticalStateTransitions,
+    OpticalStateTransitionCollection,
     TruthTable,
     TruthTableLogicType,
+)
+from piel.conversion import (
     convert_tuple_to_string,
     convert_to_bits,
 )
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def add_truth_table_bit_to_phase_data(
@@ -124,7 +129,7 @@ def add_truth_table_phase_to_bit_data(
 
 
 def convert_optical_transitions_to_truth_table(
-    optical_state_transitions: OpticalStateTransitions,
+    optical_state_transitions: OpticalStateTransitionCollection,
     bit_phase_map=BitPhaseMap,
     logic: TruthTableLogicType = "implementation",
 ) -> TruthTable:
@@ -137,7 +142,8 @@ def convert_optical_transitions_to_truth_table(
     else:
         raise ValueError(f"Invalid logic type: {logic}")
 
-    phase_bit_array_length = len(transitions_dataframe["phase"][0])
+    logger.debug(transitions_dataframe["phase"])
+    phase_bit_array_length = len(transitions_dataframe["phase"].iloc[0])
     truth_table_raw = dict()
 
     # Check if all input and output connection are in the dataframe

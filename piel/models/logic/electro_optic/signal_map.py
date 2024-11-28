@@ -29,6 +29,7 @@ def linear_bit_phase_map(
     final_phase_rad: float,
     initial_phase_rad: float = 0,
     quantization_error: float = 0.000001,
+    **kwargs,
 ) -> BitPhaseMap:
     """
     Returns a linear direct mapping of bits to phase.

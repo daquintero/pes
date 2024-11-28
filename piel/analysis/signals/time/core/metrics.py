@@ -1,6 +1,6 @@
 import numpy as np
 from piel.types import (
-    MultiDataTimeSignal,
+    MultiTimeSignalData,
     ScalarMetric,
     EdgeTransitionAnalysisTypes,
     ScalarMetricCollection,
@@ -10,14 +10,14 @@ from piel.analysis.metrics import aggregate_scalar_metrics_collection
 
 
 def extract_mean_metrics_list(
-    multi_data_time_signal: MultiDataTimeSignal, **kwargs
+    multi_data_time_signal: MultiTimeSignalData, **kwargs
 ) -> ScalarMetricCollection:
     """
     Extracts scalar metrics from a collection of rising edge signals. Standard deviation is not calculated as this just
     computes individual metrics list.
 
     Args:
-        multi_data_time_signal (List[DataTimeSignalData]): A list of rising edge signals.
+        multi_data_time_signal (List[TimeSignalData]): A list of rising edge signals.
 
     Returns:
         ScalarMetricCollection: A collection of ScalarMetric instances containing the extracted metrics.
@@ -58,7 +58,7 @@ def extract_mean_metrics_list(
 
 
 def extract_peak_to_peak_metrics_list(
-    multi_data_time_signal: MultiDataTimeSignal,
+    multi_data_time_signal: MultiTimeSignalData,
     metric_kwargs_list: list[dict] = None,
     **kwargs,
 ) -> ScalarMetricCollection:
@@ -67,7 +67,7 @@ def extract_peak_to_peak_metrics_list(
     difference between the maximum and minimum values of the signal.
 
     Args:
-        multi_data_time_signal (MultiDataTimeSignal): A collection of time signals to analyze.
+        multi_data_time_signal (MultiTimeSignalData): A collection of time signals to analyze.
 
     Returns:
         ScalarMetricCollection: A collection of ScalarMetric instances containing the peak-to-peak values
@@ -116,7 +116,7 @@ def extract_peak_to_peak_metrics_list(
 
 
 def extract_multi_time_signal_statistical_metrics(
-    multi_data_time_signal: MultiDataTimeSignal,
+    multi_data_time_signal: MultiTimeSignalData,
     analysis_type: EdgeTransitionAnalysisTypes = "peak_to_peak",
     **kwargs,
 ) -> ScalarMetric:
@@ -124,7 +124,7 @@ def extract_multi_time_signal_statistical_metrics(
     Extracts scalar metrics from a collection of rising edge signals.
 
     Args:
-        multi_data_time_signal (List[DataTimeSignalData]): A list of rising edge signals.
+        multi_data_time_signal (List[TimeSignalData]): A list of rising edge signals.
         analysis_type (piel.types.EdgeTransitionAnalysisTypes): The type of analysis to perform.
 
     Returns:
@@ -146,7 +146,7 @@ def extract_multi_time_signal_statistical_metrics(
 
 
 def extract_statistical_metrics_collection(
-    multi_data_time_signal: MultiDataTimeSignal,
+    multi_data_time_signal: MultiTimeSignalData,
     analysis_types: list[EdgeTransitionAnalysisTypes],
     **kwargs,
 ) -> ScalarMetricCollection:
@@ -154,7 +154,7 @@ def extract_statistical_metrics_collection(
     Extracts a collection of scalar metrics from a collection of rising edge signals based on multiple analysis types.
 
     Args:
-        multi_data_time_signal (MultiDataTimeSignal): A collection of rising edge signals.
+        multi_data_time_signal (MultiTimeSignalData): A collection of rising edge signals.
         analysis_types (list[EdgeTransitionAnalysisTypes], optional): The types of analyses to perform. Defaults to ["peak_to_peak"].
 
     Returns:

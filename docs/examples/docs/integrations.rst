@@ -8,4 +8,3 @@ Integrations
    ../03a_sax_cocotb_cosimulation
    ../03b_optical_function_verification
    ../04_spice_cosimulation/04_spice_cosimulation
-   ../04a_analogue_circuit_layout_simulation/04a_analogue_circuit_layout_simulation

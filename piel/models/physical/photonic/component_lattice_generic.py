@@ -28,9 +28,7 @@ def find_largest_component(component_list: list) -> Component:
 
 
 @cell
-def component_lattice_generic(
-    network: list[list] | None = None,
-) -> Component:
+def component_lattice_generic(network: list[list] | None = None, **kwargs) -> Component:
     """
     The shape of the `network` matrix determines the physical interconnection.
     Note that there should be at least S+1=N modes

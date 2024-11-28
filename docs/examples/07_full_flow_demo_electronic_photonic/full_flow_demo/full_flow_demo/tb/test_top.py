@@ -13,7 +13,7 @@ async def truth_table_test(dut):
     input_fock_state_str_data = []
     bit_phase_0_data = []
     bit_phase_1_data = []
-    time_data = []
+    time = []
 
     # Test case 1
     dut.input_fock_state_str.value = cocotb.binary.BinaryValue("100")
@@ -28,7 +28,7 @@ async def truth_table_test(dut):
     input_fock_state_str_data.append(dut.input_fock_state_str.value)
     bit_phase_0_data.append(dut.bit_phase_0.value)
     bit_phase_1_data.append(dut.bit_phase_1.value)
-    time_data.append(get_sim_time())
+    time.append(get_sim_time())
 
     # Test case 2
     dut.input_fock_state_str.value = cocotb.binary.BinaryValue("001")
@@ -43,7 +43,7 @@ async def truth_table_test(dut):
     input_fock_state_str_data.append(dut.input_fock_state_str.value)
     bit_phase_0_data.append(dut.bit_phase_0.value)
     bit_phase_1_data.append(dut.bit_phase_1.value)
-    time_data.append(get_sim_time())
+    time.append(get_sim_time())
 
     # Test case 3
     dut.input_fock_state_str.value = cocotb.binary.BinaryValue("010")
@@ -58,13 +58,13 @@ async def truth_table_test(dut):
     input_fock_state_str_data.append(dut.input_fock_state_str.value)
     bit_phase_0_data.append(dut.bit_phase_0.value)
     bit_phase_1_data.append(dut.bit_phase_1.value)
-    time_data.append(get_sim_time())
+    time.append(get_sim_time())
 
     simulation_data = {
         "input_fock_state_str": input_fock_state_str_data,
         "bit_phase_0": bit_phase_0_data,
         "bit_phase_1": bit_phase_1_data,
-        "time": time_data,
+        "time": time,
     }
 
     pd.DataFrame(simulation_data).to_csv(

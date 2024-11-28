@@ -38,7 +38,6 @@
     "FP_PDN_VOFFSET": 5,
     "FP_PDN_HOFFSET": 5,
     "FP_SIZING": "absolute",
-    "PDK": "sky130A",
     "pdk::sky130A": {
         "MAX_FANOUT_CONSTRAINT": 6,
         "FP_CORE_UTIL": 40,

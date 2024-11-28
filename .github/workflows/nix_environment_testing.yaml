@@ -16,20 +16,8 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Install Nix
-      - name: Install Nix with Extra Options
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/pr/1145 | sh -s -- install --no-confirm --extra-conf "
-            extra-substituters = https://openlane.cachix.org
-            extra-trusted-public-keys = openlane.cachix.org-1:qqdwh+QMNGmZAuyeQJTH9ErW57OWSvdtuwfBKdS254E=
-          "
-      # Step 3: Enable Nix Flakes
-      - name: Enable Nix Flakes
-        run: |
-          mkdir -p ~/.config/nix
-          echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-      # Step 5: Build the flake with no options
-      - name: Build Flake
-        run: nix build .
+      - name: Install and Build Nix with script
+        run: source scripts/install_piel_nix.sh
 
       # Step 6: Run flake checks/tests
       - name: Run Flake Checks

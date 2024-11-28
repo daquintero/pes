@@ -202,34 +202,46 @@ def extract_two_port_network_transmission_to_dataframe(
     start_index = get_s_parameter_start_index(network_transmission)
 
     # Define the number of ports (assuming two-port network)
-    num_ports = 2  # TODO udpate to automatic extraction
+    num_ports = 2  # TODO update to automatic extraction
 
     i = 0
     for path_transmission in network_transmission.network:
         try:
             input_port, output_port = path_transmission.connection
+            # print(input_port, output_port)
         except ValueError as e:
             raise ValueError(
                 f"Invalid connection format: {path_transmission.connection}"
             ) from e
 
+        # print("output, input")
+        # print(output_port, input_port)
+
         input_index = get_port_index_from_name(input_port, starting_index=start_index)
         output_index = get_port_index_from_name(output_port, starting_index=start_index)
 
+        # print("index")
+        # print(output_index, input_index)
+
         # TODO still a bit hacked but how to fix better
+        # TODO URGENT FIX properly implement
         if input_index == output_index == (i + 1):
             pass
         elif input_index != output_index:
             pass
+        elif input_index == output_index:
+            pass
         else:
             # S11, s21, s12, s22, ...
-            # print(input_index, output_index)
             input_index = (i // num_ports) + start_index + 1
             output_index = (i % num_ports) + start_index + 1
-            # print(input_index, output_index)
 
         # Construct the S-parameter string, e.g., "s_11", "s_21", etc.
+        # print(input_index, output_index)
         s_parameter_str = f"s_{output_index}{input_index}"
+
+        # print("s_parameter_str")
+        # print(s_parameter_str)
 
         # Convert the transmission input to DataFrame
         path_df = extract_phasor_type_to_dataframe(path_transmission.transmission)

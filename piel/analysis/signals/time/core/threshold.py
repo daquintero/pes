@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.signal import find_peaks
-from piel.types import DataTimeSignalData, MultiDataTimeSignal
+from piel.types import TimeSignalData, MultiTimeSignalData
 from typing import Optional, List
 import logging
 
@@ -8,16 +8,16 @@ logger = logging.getLogger(__name__)
 
 
 def extract_signal_above_threshold(
-    signal_data: DataTimeSignalData,
+    signal_data: TimeSignalData,
     threshold: float,
     min_pulse_width_s: float = 0.0,
     noise_floor: float = 0.0,
-) -> MultiDataTimeSignal:
+) -> MultiTimeSignalData:
     """
     Extracts all pulses from the input signal that exceed the specified threshold.
 
     Args:
-        signal_data (DataTimeSignalData): The original signal data containing time and data arrays.
+        signal_data (TimeSignalData): The original signal data containing time and data arrays.
         threshold (float): The data value threshold to identify pulses.
         min_pulse_width_s (float, optional): The minimum duration (in seconds) for a pulse to be considered valid.
                                              Pulses shorter than this duration will be ignored. Defaults to 0.0.
@@ -25,7 +25,7 @@ def extract_signal_above_threshold(
                                        Defaults to 0.0.
 
     Returns:
-        MultiDataTimeSignal: A list of DataTimeSignalData instances, each representing a detected pulse.
+        MultiTimeSignalData: A list of DataTimeSignalData instances, each representing a detected pulse.
     """
     # Convert lists to NumPy arrays for efficient processing
     time = np.array(signal_data.time_s)
@@ -53,7 +53,7 @@ def extract_signal_above_threshold(
     logger.debug(f"Detected {len(pulse_start_indices)} potential pulses.")
 
     # Initialize list to hold extracted pulses
-    extracted_pulses: MultiDataTimeSignal = []
+    extracted_pulses: MultiTimeSignalData = []
 
     # Iterate over each detected pulse
     for idx, (start_idx, end_idx) in enumerate(
@@ -74,8 +74,8 @@ def extract_signal_above_threshold(
         # Optionally, assign noise_floor to non-pulse regions if maintaining original array length
         # Here, we create pulses with their own time and data arrays
 
-        # Create a DataTimeSignalData instance for the pulse
-        pulse_signal = DataTimeSignalData(
+        # Create a TimeSignalData instance for the pulse
+        pulse_signal = TimeSignalData(
             time_s=pulse_time.tolist(),
             data=pulse_data.tolist(),
             data_name=f"{signal_data.data_name}_pulse_{idx}",
@@ -93,20 +93,20 @@ def extract_signal_above_threshold(
 
 
 def extract_pulses_from_signal(
-    full_data: DataTimeSignalData,
+    full_data: TimeSignalData,
     pre_pulse_time_s: float = 0.01,
     post_pulse_time_s: float = 0.01,
     noise_std_multiplier: float = 3.0,
     min_pulse_height: Optional[float] = None,
     min_pulse_distance_s: Optional[float] = None,
     data_time_signal_kwargs: Optional[dict] = None,
-) -> List[DataTimeSignalData]:
+) -> List[TimeSignalData]:
     """
     Detects and extracts pulses from a DataTimeSignalData instance, including segments
     before and after each pulse up to the noise floor.
 
     Parameters:
-        full_data (DataTimeSignalData): The input signal data containing multiple pulses.
+        full_data (TimeSignalData): The input signal data containing multiple pulses.
         pre_pulse_time_s (float): Time (in seconds) to include before each detected pulse.
         post_pulse_time_s (float): Time (in seconds) to include after each detected pulse.
         noise_std_multiplier (float): Multiplier for noise standard deviation to set detection threshold.
@@ -117,7 +117,7 @@ def extract_pulses_from_signal(
         data_time_signal_kwargs (dict, optional): Additional keyword arguments for DataTimeSignalData.
 
     Returns:
-        List[DataTimeSignalData]: A list of DataTimeSignalData instances, each representing an extracted pulse.
+        List[TimeSignalData]: A list of DataTimeSignalData instances, each representing an extracted pulse.
     """
     if data_time_signal_kwargs is None:
         data_time_signal_kwargs = {}
@@ -188,9 +188,9 @@ def extract_pulses_from_signal(
         segment_time = time_s[pre_start_idx:post_end_idx]
         segment_data = data[pre_start_idx:post_end_idx]
 
-        # Create a new DataTimeSignalData instance for the pulse
+        # Create a new TimeSignalData instance for the pulse
         pulse_data_name = f"{full_data.data_name}_pulse_{peak_idx}"
-        extracted_pulse = DataTimeSignalData(
+        extracted_pulse = TimeSignalData(
             time_s=segment_time.tolist(),
             data=segment_data.tolist(),
             data_name=pulse_data_name,
@@ -202,12 +202,12 @@ def extract_pulses_from_signal(
     return extracted_pulses
 
 
-def is_pulse_above_threshold(pulse: DataTimeSignalData, threshold: float) -> bool:
+def is_pulse_above_threshold(pulse: TimeSignalData, threshold: float) -> bool:
     """
     Determines if the pulse's amplitude exceeds the specified threshold.
 
     Parameters:
-        pulse (DataTimeSignalData): The pulse data to evaluate.
+        pulse (TimeSignalData): The pulse data to evaluate.
         threshold (float): The amplitude threshold.
 
     Returns:

@@ -3,7 +3,7 @@ import math
 import numpy as np
 import jax.numpy as jnp
 from typing import Optional, Literal, Any
-from piel.types.type_conversion import convert_array_type
+from piel.conversion import convert_array_type
 
 
 def all_fock_states_from_photon_number(

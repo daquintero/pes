@@ -2,18 +2,20 @@ import jax.numpy as jnp  # TODO add typing
 import logging
 from itertools import product
 from typing import Optional, Callable, Any
-from ..types import (
-    absolute_to_threshold,
-    convert_array_type,
+from piel.types import (
     ArrayTypes,
     PhotonicCircuitComponent,
-    FockStatePhaseTransitionType,
+    FockStatePhaseTransition,
     NumericalTypes,
     PhaseTransitionTypes,
     OpticalTransmissionCircuit,
-    OpticalStateTransitions,
+    OpticalStateTransitionCollection,
     SParameterCollection,
     TupleIntType,
+)
+from piel.conversion import (
+    absolute_to_threshold,
+    convert_array_type,
 )
 from ..tools.sax.netlist import (
     address_value_dictionary_to_function_parameter_dictionary,
@@ -23,6 +25,7 @@ from ..tools.sax.utils import sax_to_s_parameters_standard_matrix
 from ..tools.qutip import fock_states_only_individual_modes
 from ..models.frequency.defaults import get_default_models
 from ..integration.thewalrus_qutip import fock_transition_probability_amplitude
+from piel.tools.gdsfactory import get_netlist_recursive, get_netlist
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +115,7 @@ def calculate_all_transition_probability_amplitudes(
     unitary_matrix: ArrayTypes,
     input_fock_states: list[ArrayTypes],
     output_fock_states: list[ArrayTypes],
-) -> dict[int, FockStatePhaseTransitionType]:
+) -> dict[int, FockStatePhaseTransition]:
     """
     This tells us the transition probabilities between our photon states for a particular implemented unitary.
 
@@ -122,7 +125,7 @@ def calculate_all_transition_probability_amplitudes(
         output_fock_states (list): The list of output Fock states.
 
     Returns:
-        dict[int, FockStatePhaseTransitionType]: The dictionary of the Fock state phase transition type.
+        dict[int, FockStatePhaseTransition]: The dictionary of the Fock state phase transition type.
     """
     i = 0
     circuit_transition_probability_data_i = dict()
@@ -173,10 +176,11 @@ def calculate_classical_transition_probability_amplitudes(
     for i, input_fock_state in enumerate(input_fock_states):
         mode_transformation = jnp.dot(unitary_matrix, input_fock_state)
         classical_transition_mode_probability = jnp.abs(
-            mode_transformation
+            mode_transformation,
         )  # Assuming probabilities are the squares of the amplitudes TODO recheck
 
         if target_mode_index is not None:
+            logger.debug(classical_transition_mode_probability[target_mode_index])
             if (
                 isinstance(
                     classical_transition_mode_probability[target_mode_index],
@@ -206,6 +210,8 @@ def calculate_classical_transition_probability_amplitudes(
             )
             pass
 
+        logger.debug(classical_transition_target_mode_probability)
+
         data = {
             "input_fock_state": input_fock_state,
             "mode_transformation": mode_transformation,
@@ -223,7 +229,7 @@ def construct_unitary_transition_probability_performance(
     unitary_phase_implementations_dictionary: dict,
     input_fock_states: list,
     output_fock_states: list,
-) -> dict[int, dict[int, FockStatePhaseTransitionType]]:
+) -> dict[int, dict[int, FockStatePhaseTransition]]:
     """
     This function determines the Fock state probability performance for a given implemented unitary. This means we
     iterate over each circuit, then each implemented unitary, and we determine the probability transformation
@@ -288,7 +294,7 @@ def compose_network_matrix_from_models(
 
     if netlist_function is None:
         # Generate the netlist recursively
-        netlist = circuit_component.get_netlist_recursive(allow_multiple=True)
+        netlist = get_netlist_recursive(circuit_component, allow_multiple=True)
 
         switch_instance_list_i = get_matched_model_recursive_netlist_instances(
             recursive_netlist=netlist,
@@ -355,14 +361,14 @@ def compose_network_matrix_from_models(
 
 
 def extract_phase_from_fock_state_transitions(
-    optical_state_transitions: OpticalStateTransitions,
+    optical_state_transitions: OpticalStateTransitionCollection,
     transition_type: PhaseTransitionTypes = "cross",
 ):
     """
     Extracts the phase corresponding to the specified transition type.
 
     Parameters:
-    optical_state_transitions (OpticalStateTransitions): Optical state transitions.
+    optical_state_transitions (OpticalStateTransitionCollection): Optical state transitions.
         transition_type (str): Type of transition to extract phase for ('cross' or 'bar').
 
     Returns:
@@ -413,9 +419,9 @@ def format_electro_optic_fock_transition(
     input_fock_state_array: ArrayTypes,
     raw_output_state: ArrayTypes,
     **kwargs,
-) -> FockStatePhaseTransitionType:
+) -> FockStatePhaseTransition:
     """
-    Formats the electro-optic state into a standard FockStatePhaseTransitionType format. This is useful for the
+    Formats the electro-optic state into a standard FockStatePhaseTransition format. This is useful for the
     electro-optic model to ensure that the output state is in the correct format. The output state is a dictionary
     that contains the phase, input fock state, and output fock state. The idea is that this will allow us to
     standardise and compare the output states of the electro-optic model across multiple formats.
@@ -427,7 +433,7 @@ def format_electro_optic_fock_transition(
         **kwargs: Additional keyword arguments.
 
     Returns:
-        electro_optic_state(FockStatePhaseTransitionType): Electro-optic state.
+        electro_optic_state(FockStatePhaseTransition): Electro-optic state.
     """
     electro_optic_state = {
         "phase": convert_array_type(switch_state_array, "tuple"),
@@ -437,7 +443,7 @@ def format_electro_optic_fock_transition(
         ),
         **kwargs,
     }
-    # assert type(electro_optic_state) == FockStatePhaseTransitionType # TODO fix this
+    # assert isinstance(electro_optic_state, FockStatePhaseTransition) # TODO FIX ME
     return electro_optic_state
 
 
@@ -465,7 +471,7 @@ def generate_s_parameter_circuit_from_photonic_circuit(
 
     if netlist_function is None:
         # Step 2: Generate the netlist recursively
-        netlist = circuit.get_netlist_recursive(allow_multiple=True)
+        netlist = get_netlist_recursive(circuit, allow_multiple=True)
     else:
         netlist = netlist_function(circuit)
 
@@ -481,7 +487,7 @@ def generate_s_parameter_circuit_from_photonic_circuit(
         Custom exception mapping.
         """
         # Step 3: Identify the top-level circuit name
-        top_level_name = circuit.get_netlist()["name"]
+        top_level_name = get_netlist(circuit)["name"]
 
         # Step 4: Get required measurement for the top-level circuit
         required_models = sax.get_required_circuit_models(
@@ -523,7 +529,7 @@ def get_state_phase_transitions(
     netlist_function: Optional[Callable] = None,
     target_mode_index: Optional[int] = None,
     **kwargs,
-) -> OpticalStateTransitions:
+) -> OpticalStateTransitionCollection:
     """
     The goal of this function is to extract the corresponding phase required to implement a state transition.
 
@@ -589,6 +595,12 @@ def get_state_phase_transitions(
         )
 
         for id_i_i, _ in data_i.items():
+            logger.debug(data_i[id_i_i]["classical_transition_target_mode_probability"])
+            logger.debug(
+                jnp.round(
+                    data_i[id_i_i]["classical_transition_target_mode_probability"]
+                )
+            )
             output_state_i = format_electro_optic_fock_transition(
                 switch_state_array=extract_phase_tuple_from_phase_address_state(
                     circuit_phase_address_state[id_i]
@@ -598,7 +610,9 @@ def get_state_phase_transitions(
                     "classical_transition_mode_probability"
                 ],
                 target_mode_output=int(
-                    data_i[id_i_i]["classical_transition_target_mode_probability"]
+                    jnp.round(
+                        data_i[id_i_i]["classical_transition_target_mode_probability"]
+                    )
                 )
                 if data_i[id_i_i]["classical_transition_target_mode_probability"]
                 is not None
@@ -611,7 +625,7 @@ def get_state_phase_transitions(
             output_states.append(output_state_i)
         id_i += 1
 
-    output_optical_state_transitions = OpticalStateTransitions(
+    output_optical_state_transitions = OpticalStateTransitionCollection(
         mode_amount=mode_amount,
         target_mode_index=target_mode_index,
         transmission_data=output_states,

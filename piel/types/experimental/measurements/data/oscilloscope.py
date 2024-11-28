@@ -1,5 +1,5 @@
 from .core import MeasurementData, MeasurementDataCollection
-from piel.types.signal.time_data import MultiDataTimeSignal
+from piel.types.signal.time_data import MultiTimeSignalData
 from piel.types.metrics import ScalarMetricCollection
 
 
@@ -11,12 +11,12 @@ class OscilloscopeMeasurementData(MeasurementData):
 
     Attributes:
         measurements (Optional[SignalMetricsMeasurementCollection]): The collection of signal measurements.
-        waveform_list (MultiDataTimeSignal): The collection of waveforms.
+        waveform_list (MultiTimeSignalData): The collection of waveforms.
     """
 
     type: str = "OscilloscopeMeasurementData"
     measurements: ScalarMetricCollection | None = None
-    waveform_list: MultiDataTimeSignal = []
+    waveform_list: MultiTimeSignalData = []
 
 
 class OscilloscopeMeasurementDataCollection(MeasurementDataCollection):

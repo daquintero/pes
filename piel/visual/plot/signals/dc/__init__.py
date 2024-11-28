@@ -1,1 +1,2 @@
-from .signal_dc_collection import plot_signal_dc_collection
+from .basic import plot_signal_dc_collection
+from .overlay import plot_signal_dc_collection_equivalent

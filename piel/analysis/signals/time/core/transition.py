@@ -1,22 +1,22 @@
 import numpy as np
-from piel.types import DataTimeSignalData, MultiDataTimeSignal
+from piel.types import TimeSignalData, MultiTimeSignalData
 
 
 def extract_rising_edges(
-    signal: DataTimeSignalData,
+    signal: TimeSignalData,
     lower_threshold_ratio: float = 0.1,
     upper_threshold_ratio: float = 0.9,
-) -> MultiDataTimeSignal:
+) -> MultiTimeSignalData:
     """
     Extracts rising edges from a signal defined as transitions from lower_threshold to upper_threshold.
 
     Args:
-        signal (DataTimeSignalData): The input signal data.
+        signal (TimeSignalData): The input signal data.
         lower_threshold_ratio (float): Lower threshold as a fraction of signal amplitude (default 0.1).
         upper_threshold_ratio (float): Upper threshold as a fraction of signal amplitude (default 0.9).
 
     Returns:
-        MultiDataTimeSignal: A list of DataTimeSignalData instances, each representing a rising edge.
+        MultiTimeSignalData: A list of DataTimeSignalData instances, each representing a rising edge.
     """
     # Convert lists to numpy arrays for efficient processing
     time = np.array(signal.time_s)
@@ -35,7 +35,7 @@ def extract_rising_edges(
     upper_threshold = data_min + upper_threshold_ratio * amplitude
 
     # Initialize list to hold rising edges
-    rising_edges: MultiDataTimeSignal = []
+    rising_edges: MultiTimeSignalData = []
 
     # State variables
     in_rising = False
@@ -55,8 +55,8 @@ def extract_rising_edges(
                 edge_time = time[start_idx : end_idx + 1]
                 edge_data = data[start_idx : end_idx + 1]
 
-                # Create a new DataTimeSignalData instance for the rising edge
-                edge_signal = DataTimeSignalData(
+                # Create a new TimeSignalData instance for the rising edge
+                edge_signal = TimeSignalData(
                     time_s=edge_time.tolist(),
                     data=edge_data.tolist(),
                     data_name=f"{signal.data_name}_rising_edge_{len(rising_edges) + 1}",

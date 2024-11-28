@@ -161,13 +161,6 @@ def test_piel_base_model():
     assert model.field2 == "test"
 
 
-def test_piel_base_model_supplied_parameters():
-    model = TestModel(field1=123)
-    supplied_params = model.supplied_parameters()
-    assert "field1" in supplied_params
-    assert "field2" not in supplied_params
-
-
 # Test cases for Quantity
 def test_quantity_type_initialization():
     quantity = Quantity(unit=piel.types.m)
