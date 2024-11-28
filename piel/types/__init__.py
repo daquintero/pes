@@ -175,8 +175,10 @@ from piel.types.signal.electro_optic import (
 )
 
 from piel.types.signal.time_data import (
+    TimeSignalData,
     DataTimeSignalData,
     EdgeTransitionAnalysisTypes,
+    MultiTimeSignalData,
     MultiDataTimeSignal,
     MultiDataTimeSignalCollectionTypes,
     MultiDataTimeSignalAnalysisTypes,

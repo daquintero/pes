@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from piel.types import DataTimeSignalData, ScalarMetricCollection
+from piel.types import TimeSignalData, ScalarMetricCollection
 from piel.analysis.signals.time.core.split import extract_pulses_from_signal
 from piel.analysis.signals.time.core.metrics import extract_peak_to_peak_metrics_list
 
 
 def extract_peak_to_peak_metrics_after_split_pulses(
-    full_signal: DataTimeSignalData,
+    full_signal: TimeSignalData,
     pre_pulse_time_s: float = 1e-9,
     post_pulse_time_s: float = 1e-9,
     noise_std_multiplier: float = 3.0,
@@ -19,7 +19,7 @@ def extract_peak_to_peak_metrics_after_split_pulses(
     Extracts pulses from the full signal and computes peak-to-peak metrics.
 
     Parameters:
-    - full_signal (DataTimeSignalData): The complete time signal data to be analyzed.
+    - full_signal (TimeSignalData): The complete time signal data to be analyzed.
     - pre_pulse_time_s (float): Time in seconds before the pulse to include.
     - post_pulse_time_s (float): Time in seconds after the pulse to include.
     - noise_std_multiplier (float): Multiplier for noise standard deviation to detect pulses.
@@ -34,7 +34,7 @@ def extract_peak_to_peak_metrics_after_split_pulses(
 
     try:
         # Extract pulses from the full signal
-        pulses: List[DataTimeSignalData] = extract_pulses_from_signal(
+        pulses: List[TimeSignalData] = extract_pulses_from_signal(
             full_data=full_signal,
             pre_pulse_time_s=pre_pulse_time_s,
             post_pulse_time_s=post_pulse_time_s,

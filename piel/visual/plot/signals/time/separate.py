@@ -1,5 +1,5 @@
 from typing import Any, Tuple
-from piel.types import MultiDataTimeSignal, Unit
+from piel.types import MultiTimeSignalData, Unit
 import numpy as np
 from piel.visual.plot.position import create_axes_per_figure
 from piel.visual.plot.core import save
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def plot_multi_data_time_signal_different(
-    multi_signal: MultiDataTimeSignal,
+    multi_signal: MultiTimeSignalData,
     fig: Any = None,
     axs: Any = None,
     subplots_kwargs: dict = None,
@@ -24,7 +24,7 @@ def plot_multi_data_time_signal_different(
     Plots all rising edge signals on the same figure, but with a shared x-axis and multiple y-axes.
 
     Args:
-        multi_signal (MultiDataTimeSignal): List of rising edge signals.
+        multi_signal (MultiTimeSignalData): List of rising edge signals.
         fig (Any): Figure object.
         axs (Any): Axes object.
         subplots_kwargs (dict): Keyword arguments to pass to create_axes_per_figure.
@@ -88,6 +88,11 @@ def plot_multi_data_time_signal_different(
         pass
     elif isinstance(title, str):
         fig.suptitle(title)
+
+    if time_range_s is None:
+        # Assumes at least one signal
+        time_range_s = [min(multi_signal[0].time_s), max(multi_signal[0].time_s)]
+        # TODO improve this
 
     time_range_s[0] = time_range_s[0] / x_correction
     time_range_s[1] = time_range_s[1] / x_correction

@@ -731,7 +731,7 @@ reinsantiated_calibration_experiment.name
 
 # Note that this has some limitations of revalidation and reinstantion of python classes.
 
-# ### Extract Software-Defined Statistics from a `DataTimeSignalData`
+# ### Extract Software-Defined Statistics from a `TimeSignalData`
 
 # `piel.analysis` also provides some functionality to analyse the corresponding time-data accordingly.
 #

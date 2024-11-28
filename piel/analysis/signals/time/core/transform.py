@@ -1,16 +1,16 @@
 import numpy as np
-from piel.types import MultiDataTimeSignal, DataTimeSignalData
+from piel.types import MultiTimeSignalData, TimeSignalData
 
 
-def offset_time_signals(multi_signal: MultiDataTimeSignal) -> MultiDataTimeSignal:
+def offset_time_signals(multi_signal: MultiTimeSignalData) -> MultiTimeSignalData:
     """
-    Offsets the time_s array of each DataTimeSignalData in the MultiDataTimeSignal to start at 0.
+    Offsets the time_s array of each TimeSignalData in the MultiTimeSignalData to start at 0.
 
     Args:
-        multi_signal (MultiDataTimeSignal): List of rising edge signals.
+        multi_signal (MultiTimeSignalData): List of rising edge signals.
 
     Returns:
-        MultiDataTimeSignal: New list with offset time_s arrays.
+        MultiTimeSignalData: New list with offset time_s arrays.
     """
     offset_signals = []
     for signal in multi_signal:
@@ -27,8 +27,8 @@ def offset_time_signals(multi_signal: MultiDataTimeSignal) -> MultiDataTimeSigna
         # Apply the offset
         offset_time = time - offset
 
-        # Create a new DataTimeSignalData instance with the offset time
-        offset_signal = DataTimeSignalData(
+        # Create a new TimeSignalData instance with the offset time
+        offset_signal = TimeSignalData(
             time_s=offset_time.tolist(), data=data.tolist(), data_name=signal.data_name
         )
         offset_signals.append(offset_signal)

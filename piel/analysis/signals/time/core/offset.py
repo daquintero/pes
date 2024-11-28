@@ -1,12 +1,12 @@
 import numpy as np
-from piel.types import DataTimeSignalData
+from piel.types import TimeSignalData
 
 
 def offset_to_first_rising_edge(
-    waveform: DataTimeSignalData,
+    waveform: TimeSignalData,
     lower_threshold_ratio: float = 0.1,
     upper_threshold_ratio: float = 0.9,
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Offsets the waveform's time axis so that the first rising edge occurs at time zero.
 
@@ -14,12 +14,12 @@ def offset_to_first_rising_edge(
     threshold to above the upper threshold.
 
     Parameters:
-        waveform (DataTimeSignalData): The input waveform data.
+        waveform (TimeSignalData): The input waveform data.
         lower_threshold_ratio (float): Lower threshold as a ratio of the amplitude range.
         upper_threshold_ratio (float): Upper threshold as a ratio of the amplitude range.
 
     Returns:
-        DataTimeSignalData: A new waveform with the time offset applied.
+        TimeSignalData: A new waveform with the time offset applied.
 
     Raises:
         ValueError: If no rising edge is found in the waveform.
@@ -68,8 +68,8 @@ def offset_to_first_rising_edge(
     # Apply the offset
     offset_time_array = time - offset_time
 
-    # Create a new DataTimeSignalData instance with the offset time
-    offset_signal = DataTimeSignalData(
+    # Create a new TimeSignalData instance with the offset time
+    offset_signal = TimeSignalData(
         time_s=offset_time_array.tolist(),
         data=data.tolist(),
         data_name=waveform.data_name,

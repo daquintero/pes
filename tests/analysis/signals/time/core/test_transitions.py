@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from piel.types import DataTimeSignalData, MultiDataTimeSignal
+from piel.types import TimeSignalData, MultiTimeSignalData
 from piel.analysis.signals.time import extract_rising_edges
 
 
@@ -15,7 +15,7 @@ def square_wave_signal():
     frequency = 5  # 5 Hz square wave
     square_wave = 0.5 * (1 + np.sign(np.sin(2 * np.pi * frequency * t)))
 
-    signal = DataTimeSignalData(
+    signal = TimeSignalData(
         time_s=t.tolist(), data=square_wave.tolist(), data_name="SquareWave"
     )
     return signal

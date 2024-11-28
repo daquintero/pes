@@ -1,18 +1,18 @@
 import numpy as np
-from piel.types import DataTimeSignalData, Unit
+from piel.types import TimeSignalData, Unit
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 def resize_data_time_signal_units(
-    waveform: DataTimeSignalData,
+    waveform: TimeSignalData,
     time_unit: Unit,
     data_unit: Unit,
     corrected_name_suffix: str = "_corrected",
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
-    Applies unit corrections to the time and data arrays of a DataTimeSignalData object.
+    Applies unit corrections to the time and data arrays of a TimeSignalData object.
 
     Parameters:
     - waveform: The original waveform data.
@@ -21,7 +21,7 @@ def resize_data_time_signal_units(
     - corrected_name_suffix: Suffix to append to the data name after correction.
 
     Returns:
-    - A new DataTimeSignalData object with corrected time and data.
+    - A new TimeSignalData object with corrected time and data.
     """
     # Convert time and data to NumPy arrays for efficient computation
     time_array = np.array(waveform.time_s, dtype=float)
@@ -57,7 +57,7 @@ def resize_data_time_signal_units(
     corrected_data_name = f"{waveform.data_name}{corrected_name_suffix}"
 
     # Create and return the corrected waveform
-    return DataTimeSignalData(
+    return TimeSignalData(
         time_s=corrected_time.tolist(),  # Convert back to list if necessary
         data=corrected_data.tolist(),
         data_name=corrected_data_name,

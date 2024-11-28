@@ -8,20 +8,20 @@ from piel.analysis.signals.time import (
 )
 
 # Import necessary classes and units
-from piel.types import DataTimeSignalData, Unit
+from piel.types import TimeSignalData, Unit
 
 # Sample Units
 SECOND_UNIT = Unit(name="second", datum="time", base=1, label="s")
 VOLTAGE_UNIT = Unit(name="volt", datum="voltage", base=1, label="V")
 
 
-# Helper function to create DataTimeSignalData
+# Helper function to create TimeSignalData
 def create_data_time_signal(
     time_s: list[float],
     data: list[float],
     data_name: str = "Signal",
-) -> DataTimeSignalData:
-    return DataTimeSignalData(time_s=time_s, data=data, data_name=data_name)
+) -> TimeSignalData:
+    return TimeSignalData(time_s=time_s, data=data, data_name=data_name)
 
 
 # def test_offset_to_first_rising_edge_success():

@@ -1,5 +1,5 @@
 from typing import Any
-from piel.types import DataTimeSignalData, Unit
+from piel.types import TimeSignalData, Unit
 import numpy as np
 import matplotlib.pyplot as plt
 from piel.visual.plot.position import create_axes_per_figure
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def plot_time_signal_data(
-    signal: DataTimeSignalData,
+    signal: TimeSignalData,
     fig: Any = None,
     axs: Any = None,
     subplots_kwargs: dict = None,
@@ -23,7 +23,7 @@ def plot_time_signal_data(
     Plots a single time signal on a figure.
 
     Args:
-        signal (DataTimeSignalData): The time signal to plot.
+        signal (TimeSignalData): The time signal to plot.
         fig (matplotlib.figure.Figure, optional): Existing figure to plot on. If None, a new figure is created.
         axs (list[matplotlib.axes.Axes, optional]): Existing list of axes to plot on. If None, new axes are created. Plots on [0] by default.
         subplots_kwargs (dict, optional): Keyword arguments to pass to create_axes_per_figure.

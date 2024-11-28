@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Optional, Dict
 from piel.types import (
-    DataTimeSignalData,
+    TimeSignalData,
 )  # Ensure this import matches your project structure
 
 
@@ -12,7 +12,7 @@ def create_off_state_generator(
     baseline: float = 0.0,
     data_name: str = "off_state",
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> Callable[[float, Optional[int]], DataTimeSignalData]:
+) -> Callable[[float, Optional[int]], TimeSignalData]:
     """
     Creates a generator function for the equivalent off state signal with noise.
 
@@ -21,18 +21,18 @@ def create_off_state_generator(
         sampling_rate (float): Sampling rate in Hz.
         baseline (float): Baseline signal level for the off state.
         data_name (str): Name of the data signal.
-        data_time_signal_kwargs (dict, optional): Additional keyword arguments for DataTimeSignalData.
+        data_time_signal_kwargs (dict, optional): Additional keyword arguments for TimeSignalData.
 
     Returns:
-        Callable[[float, Optional[int]], DataTimeSignalData]:
-            A function that takes duration_s (in seconds) and returns DataTimeSignalData.
+        Callable[[float, Optional[int]], TimeSignalData]:
+            A function that takes duration_s (in seconds) and returns TimeSignalData.
     """
     if data_time_signal_kwargs is None:
         data_time_signal_kwargs = {}
 
     def generate_off_state(
         duration_s: float, num_samples: Optional[int] = None
-    ) -> DataTimeSignalData:
+    ) -> TimeSignalData:
         """
         Generates the off state signal data with noise for a given duration_s.
 
@@ -41,7 +41,7 @@ def create_off_state_generator(
             num_samples (float): Number of samples to generate.
 
         Returns:
-            DataTimeSignalData: The generated signal data.
+            TimeSignalData: The generated signal data.
         """
         if num_samples is None:
             num_samples = int(duration_s * sampling_rate)
@@ -49,7 +49,7 @@ def create_off_state_generator(
         noise = np.random.normal(loc=0.0, scale=noise_std, size=num_samples)
         data = baseline + noise
 
-        return DataTimeSignalData(
+        return TimeSignalData(
             time_s=time_s.tolist(),
             data=data.tolist(),
             data_name=data_name,
@@ -61,15 +61,15 @@ def create_off_state_generator(
 
 # New function to extract parameters and create generator
 def extract_off_state_generator_from_off_state_section(
-    off_state_data: DataTimeSignalData,
+    off_state_data: TimeSignalData,
     data_name: Optional[str] = None,
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> Callable[[float], DataTimeSignalData]:
+) -> Callable[[float], TimeSignalData]:
     """
     Extracts parameters from an existing off state DataTimeSignalData and creates a generator function.
 
     Parameters:
-        off_state_data (DataTimeSignalData): The existing off state signal data.
+        off_state_data (TimeSignalData): The existing off state signal data.
         data_name (str, optional): Name for the new data signal. Defaults to the original data_name.
         data_time_signal_kwargs (dict, optional): Additional keyword arguments for DataTimeSignalData.
 
@@ -112,19 +112,19 @@ def extract_off_state_generator_from_off_state_section(
 
 
 def extract_off_state_generator_from_full_state_data(
-    full_time_signal_data: DataTimeSignalData,
+    full_time_signal_data: TimeSignalData,
     baseline: Optional[float] = None,
     threshold: Optional[float] = None,
     min_duration_s: Optional[float] = None,
     sampling_rate: Optional[float] = None,
     data_name: Optional[str] = None,
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> Callable[[float, Optional[int]], DataTimeSignalData]:
+) -> Callable[[float, Optional[int]], TimeSignalData]:
     """
     Extracts parameters from an existing off state DataTimeSignalData and creates a generator function.
 
     Parameters:
-        full_time_signal_data (DataTimeSignalData): The input signal data containing multiple states.
+        full_time_signal_data (TimeSignalData): The input signal data containing multiple states.
         baseline (float, optional): The baseline value representing the off state.
                                      If not provided, it is computed as the mean of the data.
         threshold (float, optional): The maximum deviation from the baseline to consider as off state.
@@ -184,18 +184,18 @@ def extract_off_state_generator_from_full_state_data(
 
 
 def extract_off_state_section(
-    full_time_signal_data: DataTimeSignalData,
+    full_time_signal_data: TimeSignalData,
     baseline: Optional[float] = None,
     threshold: Optional[float] = None,
     min_duration_s: Optional[float] = None,
     sampling_rate: Optional[float] = None,
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Extracts the off state segments from a DataTimeSignalData instance containing multiple on and off states.
 
     Parameters:
-        full_time_signal_data (DataTimeSignalData): The input signal data containing multiple states.
+        full_time_signal_data (TimeSignalData): The input signal data containing multiple states.
         baseline (float, optional): The baseline value representing the off state.
                                      If not provided, it is computed as the mean of the data.
         threshold (float, optional): The maximum deviation from the baseline to consider as off state.
@@ -206,7 +206,7 @@ def extract_off_state_section(
         data_time_signal_kwargs (dict, optional): Additional keyword arguments for DataTimeSignalData.
 
     Returns:
-        DataTimeSignalData: A new DataTimeSignalData instance containing only the off state segments.
+        TimeSignalData: A new DataTimeSignalData instance containing only the off state segments.
     """
     if data_time_signal_kwargs is None:
         data_time_signal_kwargs = {}
@@ -276,8 +276,8 @@ def extract_off_state_section(
     extracted_time = np.array(extracted_time)[sorted_indices].tolist()
     extracted_data = np.array(extracted_data)[sorted_indices].tolist()
 
-    # Create a new DataTimeSignalData instance
-    extracted_off_state = DataTimeSignalData(
+    # Create a new TimeSignalData instance
+    extracted_off_state = TimeSignalData(
         time_s=extracted_time,
         data=extracted_data,
         data_name=full_time_signal_data.data_name + "_off_state",

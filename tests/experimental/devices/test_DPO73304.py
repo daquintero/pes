@@ -5,7 +5,7 @@ from piel.experimental.devices.DPO73304 import (
     extract_to_data_time_signal,
 )
 from piel.types import (
-    DataTimeSignalData,
+    TimeSignalData,
 )
 from unittest.mock import patch, MagicMock
 
@@ -65,7 +65,7 @@ def test_extract_to_data_time_signal():
             return_value=pd.DataFrame({"time_s": [1, 2, 3], "voltage_V": [4, 5, 6]}),
         ):
             signal = extract_to_data_time_signal("dummy_path.csv")
-            assert isinstance(signal, DataTimeSignalData)
+            assert isinstance(signal, TimeSignalData)
             assert signal.time_s.tolist() == [1, 2, 3]
             assert signal.data.tolist() == [4, 5, 6]
             assert signal.data_name == "voltage_V"
@@ -82,7 +82,7 @@ def test_extract_propagation_delay_data_from_measurement():
     #     with patch("piel.measurement.devices.DPO73304.extract_to_signal_measurement") as mock_extract_signal_measurement, \
     #          patch("piel.measurement.devices.DPO73304.extract_to_data_time_signal") as mock_extract_data_time_signal:
     #         mock_extract_signal_measurement.return_value = MagicMock(spec=SignalMetricsMeasurementCollection)
-    #         mock_extract_data_time_signal.return_value = MagicMock(spec=DataTimeSignalData)
+    #         mock_extract_data_time_signal.return_value = MagicMock(spec=TimeSignalData)
     #
     #         data = extract_propagation_delay_data_from_measurement(mock_measurement)
     #         assert isinstance(data, PropagationDelayMeasurementData)
@@ -125,14 +125,12 @@ def test_combine_channel_data():
     with patch(
         "piel.experimental.devices.DPO73304.extract_to_data_time_signal"
     ) as mock_extract_to_data_time_signal:
-        mock_extract_to_data_time_signal.return_value = MagicMock(
-            spec=DataTimeSignalData
-        )
+        mock_extract_to_data_time_signal.return_value = MagicMock(spec=TimeSignalData)
         # signals = combine_channel_data(["dummy_path1.csv", "dummy_path2.csv"])
         #
         # assert isinstance(signals, list)
         # assert len(signals) == 2
-        # assert all(isinstance(signal, DataTimeSignalData) for signal in signals)
+        # assert all(isinstance(signal, TimeSignalData) for signal in signals)
         pass
 
 

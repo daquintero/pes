@@ -6,7 +6,7 @@ from piel.analysis.signals.time import offset_time_signals
 from piel.analysis.signals.time import extract_rising_edges
 
 # Import necessary classes
-from piel.types import DataTimeSignalData, MultiDataTimeSignal, Unit
+from piel.types import TimeSignalData, MultiTimeSignalData, Unit
 
 # Configure logging for testing if necessary
 import logging
@@ -19,9 +19,9 @@ VOLTAGE_UNIT = Unit(name="volt", datum="voltage", base=1.0, label="V")
 CURRENT_UNIT = Unit(name="ampere", datum="ampere", base=1.0, label="A")
 
 
-# Helper function to create DataTimeSignalData
+# Helper function to create TimeSignalData
 def create_data_time_signal(time_s, data, data_name="Test Signal"):
-    return DataTimeSignalData(time_s=time_s, data=data, data_name=data_name)
+    return TimeSignalData(time_s=time_s, data=data, data_name=data_name)
 
 
 def test_offset_time_signals_normal_case():
@@ -590,7 +590,7 @@ def test_offset_time_signals_mismatched_time_data_lengths():
     multi_signal = [signal]
 
     # Apply offset (should proceed without error as the function does not check lengths)
-    # Depending on the DataTimeSignalData definition, this might be handled elsewhere
+    # Depending on the TimeSignalData definition, this might be handled elsewhere
     # Here, we just check that the time is offset correctly
     offset_signals = offset_time_signals(multi_signal)
 
@@ -648,7 +648,7 @@ def test_extract_rising_edges_signal_with_single_point():
 
 def test_offset_time_signals_no_signals():
     """
-    Test offset_time_signals with an empty MultiDataTimeSignal list.
+    Test offset_time_signals with an empty MultiTimeSignalData list.
     """
     multi_signal = []
 

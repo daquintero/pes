@@ -13,10 +13,11 @@ def plot_signal_dc_collection(
     signal_dc_collection: SignalDCCollection,
     fig: Any = None,
     axs: Any = None,
-    subplots_kwargs: dict = None,
     xlabel: str | Unit = None,
     ylabel: str | Unit = None,
     title: str | Unit = None,
+    subplots_kwargs: dict = None,
+    plot_kwargs: dict = None,
     **kwargs,
 ):
     """
@@ -77,6 +78,12 @@ def plot_signal_dc_collection(
         ylabel = "Output Signal"
         y_correction = 1
 
+    if subplots_kwargs is None:
+        subplots_kwargs = {}
+
+    if plot_kwargs is None:
+        plot_kwargs = {"marker": "o", "linestyle": "-"}
+
     # Apply corrections if necessary
     input_values = np.array(input_values) / x_correction
     output_values = np.array(output_values) / y_correction
@@ -88,9 +95,7 @@ def plot_signal_dc_collection(
     ax = axs[0]
 
     # Plot the data
-    ax.plot(
-        input_values, output_values, label="Input vs Output", marker="o", linestyle="-"
-    )
+    ax.plot(input_values, output_values, **plot_kwargs)
 
     # Set labels and title
     ax.set_xlabel(xlabel)

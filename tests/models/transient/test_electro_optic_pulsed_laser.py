@@ -7,7 +7,7 @@ import numpy as np
 from piel.types import (
     PulsedLaser,
     PulsedLaserMetrics,
-    DataTimeSignalData,
+    TimeSignalData,
     ScalarMetric,
     ns,
     W,
@@ -77,8 +77,8 @@ def test_generate_laser_time_data_pulses_typical(pulsed_laser_with_metrics):
         data_name=data_name,
     )
 
-    # Assertions on the returned DataTimeSignalData
-    assert isinstance(signal_data, DataTimeSignalData)
+    # Assertions on the returned TimeSignalData
+    assert isinstance(signal_data, TimeSignalData)
     assert signal_data.data_name == data_name
     assert signal_data.time_s_unit == ns
     assert signal_data.data_unit == W

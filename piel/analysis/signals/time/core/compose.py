@@ -2,26 +2,26 @@
 
 import numpy as np
 from typing import List, Optional
-from piel.types import DataTimeSignalData
+from piel.types import TimeSignalData
 from .off_state import (
     extract_off_state_generator_from_full_state_data,
 )  # Adjust the import path as needed
 
 
 def compose_pulses_into_signal(
-    pulses: List[DataTimeSignalData],
+    pulses: List[TimeSignalData],
     baseline: float = 0.0,
     noise_std: Optional[float] = None,
     data_time_signal_kwargs: Optional[dict] = None,
     start_time_s: Optional[float] = None,
     end_time_s: Optional[float] = None,
-) -> DataTimeSignalData:
+) -> TimeSignalData:
     """
     Composes a full signal from a list of pulses by inserting them into a continuous time array
     and filling gaps with generated noise.
 
     Parameters:
-        pulses (List[DataTimeSignalData]): List of pulse signals to be inserted.
+        pulses (List[TimeSignalData]): List of pulse signals to be inserted.
         baseline (float, optional): Baseline value of the signal. Defaults to 0.0.
         noise_std (float, optional): Standard deviation of the noise to be generated in gaps.
                                      If not provided, it is estimated from the pulses.
@@ -30,7 +30,7 @@ def compose_pulses_into_signal(
         end_time_s (float, optional): End time of the composed signal. If not provided, uses the last pulse's end time.
 
     Returns:
-        DataTimeSignalData: The composed full signal with pulses and noise.
+        TimeSignalData: The composed full signal with pulses and noise.
     """
     if data_time_signal_kwargs is None:
         data_time_signal_kwargs = {}
@@ -164,8 +164,8 @@ def compose_pulses_into_signal(
         # Insert the pulse data
         full_data[pulse_start_idx:pulse_end_idx] = pulse_data
 
-    # Create the composed DataTimeSignalData instance
-    composed_signal = DataTimeSignalData(
+    # Create the composed TimeSignalData instance
+    composed_signal = TimeSignalData(
         time_s=full_time_s.tolist(),
         data=full_data.tolist(),
         data_name="ComposedSignal",

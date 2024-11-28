@@ -263,10 +263,10 @@ def plot_oscilloscope_signals_time(
 # # Example Usage
 # if __name__ == "__main__":
 #     from piel.types.units import s, V
-#     from piel.types.signal.time_data import DataTimeSignalData
+#     from piel.types.signal.time_data import TimeSignalData
 #
 #     # Create sample data
-#     waveform1 = DataTimeSignalData(
+#     waveform1 = TimeSignalData(
 #         time_s=[0, 1, 2, 3, 4, 5],
 #         data=[0, 1, 0, 1, 0, 1],
 #         data_name="Channel 1",
@@ -274,7 +274,7 @@ def plot_oscilloscope_signals_time(
 #         data_unit=V
 #     )
 #
-#     waveform2 = DataTimeSignalData(
+#     waveform2 = TimeSignalData(
 #         time_s=[0, 1, 2, 3, 4, 5],
 #         data=[0, 0.5, 0, 0.5, 0, 0.5],
 #         data_name="Channel 2",

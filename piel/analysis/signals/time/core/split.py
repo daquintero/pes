@@ -2,8 +2,8 @@
 import numpy as np
 from typing import List, Optional, Dict
 from piel.types import (
-    DataTimeSignalData,
-    MultiDataTimeSignal,
+    TimeSignalData,
+    MultiTimeSignalData,
 )  # Adjust the import path as needed
 from .threshold import (
     extract_pulses_from_signal,
@@ -13,7 +13,7 @@ from .compose import compose_pulses_into_signal
 
 
 def separate_per_pulse_threshold(
-    signal_data: DataTimeSignalData,
+    signal_data: TimeSignalData,
     first_signal_threshold: float,
     second_signal_threshold: float,
     trigger_delay_s: float,
@@ -24,12 +24,12 @@ def separate_per_pulse_threshold(
     second_post_pulse_time_s: float = 1e-9,
     noise_std_multiplier: float = 3.0,
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> List[MultiDataTimeSignal]:
+) -> List[MultiTimeSignalData]:
     """
     Separates pulses in a signal into two categories based on two threshold values.
 
     Parameters:
-        signal_data (DataTimeSignalData): The input signal data containing multiple pulses.
+        signal_data (TimeSignalData): The input signal data containing multiple pulses.
         first_signal_threshold (float): The higher threshold to categorize pulses.
         second_signal_threshold (float): The lower threshold to categorize pulses.
         trigger_delay_s (float): Minimum time (in seconds) between pulses to prevent overlap.
@@ -46,7 +46,7 @@ def separate_per_pulse_threshold(
         data_time_signal_kwargs (dict, optional): Additional keyword arguments for DataTimeSignalData.
 
     Returns:
-        List[MultiDataTimeSignal]: A list containing a single `MultiDataTimeSignal` instance:
+        List[MultiTimeSignalData]: A list containing a single `MultiTimeSignalData` instance:
             - `high_threshold_pulses`: List of `DataTimeSignalData` for pulses above `first_signal_threshold`.
             - `low_threshold_pulses`: List of `DataTimeSignalData` for pulses above `second_signal_threshold` but below `first_signal_threshold`.
     """
@@ -87,7 +87,7 @@ def separate_per_pulse_threshold(
     ]
 
     # Function to find the peak time of a pulse
-    def get_pulse_peak_time(pulse: DataTimeSignalData) -> float:
+    def get_pulse_peak_time(pulse: TimeSignalData) -> float:
         if not pulse.data or not pulse.time_s:
             return float("inf")  # Assign a large value if pulse data is empty
         max_idx = np.argmax(pulse.data)
@@ -130,7 +130,7 @@ def separate_per_pulse_threshold(
 
 
 def split_compose_per_pulse_threshold(
-    signal_data: DataTimeSignalData,
+    signal_data: TimeSignalData,
     first_signal_threshold: float,
     second_signal_threshold: float,
     trigger_delay_s: float,
@@ -142,12 +142,12 @@ def split_compose_per_pulse_threshold(
     start_time_s: Optional[float] = None,
     end_time_s: Optional[float] = None,
     data_time_signal_kwargs: Optional[Dict] = None,
-) -> MultiDataTimeSignal:
+) -> MultiTimeSignalData:
     """
     Separates pulses in a signal into two categories based on two threshold values.
 
     Parameters:
-        signal_data (DataTimeSignalData): The input signal data containing multiple pulses.
+        signal_data (TimeSignalData): The input signal data containing multiple pulses.
         first_signal_threshold (float): The higher threshold to categorize pulses.
         second_signal_threshold (float): The lower threshold to categorize pulses.
         trigger_delay_s (float): Minimum time (in seconds) between pulses to prevent overlap.
@@ -166,7 +166,7 @@ def split_compose_per_pulse_threshold(
         end_time_s (float, optional): End time of the composed signal. If not provided, uses the last pulse's end time.
 
     Returns:
-        List[DataTimeSignalData]: The composed full signals as [low_threshold_pulse_signal, high_threshold_pulse_signal]
+        List[TimeSignalData]: The composed full signals as [low_threshold_pulse_signal, high_threshold_pulse_signal]
     """
 
     high_threshold_pulse_list, low_threshold_pulse_list = separate_per_pulse_threshold(

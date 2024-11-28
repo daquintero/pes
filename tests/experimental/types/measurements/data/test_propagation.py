@@ -5,7 +5,7 @@ from piel.types.experimental import (
     MeasurementDataCollection,
 )
 from piel.types import (
-    DataTimeSignalData,
+    TimeSignalData,
     ScalarMetricCollection,
 )
 
@@ -13,8 +13,8 @@ from piel.types import (
 # Test PropagationDelayMeasurementData
 def test_propagation_delay_measurement_data_initialization():
     signal_metrics = ScalarMetricCollection()
-    dut_waveform = DataTimeSignalData()
-    reference_waveform = DataTimeSignalData()
+    dut_waveform = TimeSignalData()
+    reference_waveform = TimeSignalData()
 
     measurement_data = PropagationDelayMeasurementData(
         measurements=signal_metrics,
